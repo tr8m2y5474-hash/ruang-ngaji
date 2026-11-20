@@ -1,0 +1,2304 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUANG NGAJI – Portal Pembelajaran Murid</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: DM Sans (UI & Body Selesa), Plus Jakarta Sans (Heading Berkarakter), Amiri (Teks Arab Sahaja) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=DM+Sans:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['"DM Sans"', 'sans-serif'],
+                        arabic: ['"Amiri"', 'serif'],
+                    },
+                    colors: {
+                        deepTeal: {
+                            50: '#EAF3F3',
+                            100: '#CBE0E1',
+                            200: '#9CC2C5',
+                            500: '#357479',
+                            600: '#285C60',
+                            700: '#1D4649',
+                            800: '#133133',
+                            900: '#0B2022',
+                        },
+                        dustyBlue: {
+                            50: '#EDF1F6',
+                            100: '#D3DCE8',
+                            200: '#A9B9CE',
+                            500: '#647F9C',
+                            600: '#49637F',
+                            700: '#364B62',
+                            800: '#243547',
+                        },
+                        sageGreen: {
+                            50: '#EEF3F0',
+                            100: '#D5E2DA',
+                            200: '#ADC3B6',
+                            500: '#6E8877',
+                            600: '#536D5C',
+                            700: '#3E5346',
+                            800: '#2B3B31',
+                        },
+                        mutedMustard: {
+                            50: '#FBF6EA',
+                            100: '#F3E5C4',
+                            200: '#E5CA8D',
+                            500: '#D3AE65',
+                            600: '#B58E43',
+                            700: '#8D6C2D',
+                            800: '#694F1E',
+                        },
+                        dustyRose: {
+                            50: '#F9EFF0',
+                            100: '#EED6D8',
+                            200: '#DCAFB3',
+                            500: '#C58F91',
+                            600: '#A46A6D',
+                            700: '#814E51',
+                            800: '#5E3638',
+                        },
+                        terracotta: {
+                            50: '#FBF0EC',
+                            100: '#F4D7CD',
+                            200: '#E6B19E',
+                            500: '#C47F69',
+                            600: '#A3604B',
+                            700: '#7E4635',
+                            800: '#5C3124',
+                        },
+                        warmWhite: {
+                            DEFAULT: '#F8F7F3',
+                            rich: '#F2EFE8',
+                            card: '#FFFFFF',
+                        }
+                    },
+                    letterSpacing: {
+                        tightDisplay: '-0.025em',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8F7F3;
+            background-image:
+                radial-gradient(circle at 12% 8%, rgba(40, 92, 96, 0.10) 0%, transparent 38%),
+                radial-gradient(circle at 88% 14%, rgba(211, 174, 101, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 78% 85%, rgba(196, 127, 105, 0.09) 0%, transparent 42%);
+            background-attachment: fixed;
+            font-size: 16px;
+            line-height: 1.65;
+        }
+
+        .pattern-dots {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+            background-size: 18px 18px;
+        }
+
+        @keyframes textRevealUp {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatGentle {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        @keyframes pageEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardStagger {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .text-reveal {
+            opacity: 0;
+            animation: textRevealUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.10s; }
+        .delay-3 { animation-delay: 0.15s; }
+
+        .float-element {
+            animation: floatGentle 5.5s ease-in-out infinite;
+        }
+
+        .section-enter {
+            animation: pageEnter 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .stagger-item {
+            opacity: 0;
+            animation: cardStagger 0.36s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .interactive-card {
+            transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease;
+        }
+        .interactive-card:hover {
+            transform: translateY(-3px);
+        }
+        .interactive-card:active {
+            transform: translateY(-1px) scale(0.995);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1), transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-item-link {
+            position: relative;
+        }
+        .nav-item-link::after {
+            content: '';
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 4px;
+            height: 2px;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, #D3AE65, #C47F69);
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .nav-item-link:hover::after,
+        .nav-item-link.is-active::after {
+            transform: scaleX(1);
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        [role="button"]:focus-visible {
+            outline: 2px solid #D3AE65;
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .text-reveal, .stagger-item, .scroll-reveal {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-900 font-sans antialiased selection:bg-deepTeal-700 selection:text-mutedMustard-100 flex flex-col min-h-screen overflow-x-hidden">
+
+    <!-- Navigasi Utama -->
+    <header class="sticky top-0 z-40 bg-deepTeal-900/95 backdrop-blur-md text-white border-b border-mutedMustard-500/25 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                <!-- Jenama RUANG NGAJI -->
+                <a href="#utama" onclick="navigateTo('utama'); return false;" class="flex items-center gap-3.5 group focus:outline-none shrink-0">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-mutedMustard-500 to-terracotta-500 text-deepTeal-900 flex items-center justify-center shadow-sm transition-transform duration-200 group-hover:scale-[1.04]">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-display font-extrabold text-xl tracking-tightDisplay text-white">RUANG NGAJI</span>
+                            <span class="w-2 h-2 rounded-full bg-mutedMustard-500"></span>
+                        </div>
+                        <span class="block text-[11px] font-bold uppercase tracking-[0.14em] text-mutedMustard-200">Portal Pembelajaran Murid</span>
+                    </div>
+                </a>
+
+                <!-- Menu Desktop (7 Modul Utama) -->
+                <nav class="hidden lg:flex items-center gap-1" aria-label="Navigasi Utama">
+                    <button type="button" onclick="navigateTo('utama')" data-nav="utama" class="desktop-nav nav-item-link is-active px-3 py-2.5 rounded-xl text-sm font-bold text-mutedMustard-200 transition-colors duration-150 cursor-pointer">Utama</button>
+                    <button type="button" onclick="navigateTo('iqra')" data-nav="iqra" class="desktop-nav nav-item-link px-3 py-2.5 rounded-xl text-sm font-medium text-white/85 hover:text-white transition-colors duration-150 cursor-pointer">Iqra 1–6</button>
+                    <button type="button" onclick="navigateTo('alquran')" data-nav="alquran" class="desktop-nav nav-item-link px-3 py-2.5 rounded-xl text-sm font-medium text-white/85 hover:text-white transition-colors duration-150 cursor-pointer">Al-Quran Juz 1–30</button>
+                    <button type="button" onclick="navigateTo('tajwid')" data-nav="tajwid" class="desktop-nav nav-item-link px-3 py-2.5 rounded-xl text-sm font-medium text-white/85 hover:text-white transition-colors duration-150 cursor-pointer">Modul Tajwid</button>
+                    <button type="button" onclick="navigateTo('doa')" data-nav="doa" class="desktop-nav nav-item-link px-3 py-2.5 rounded-xl text-sm font-medium text-white/85 hover:text-white transition-colors duration-150 cursor-pointer">Zikir &amp; Doa</button>
+                    <button type="button" onclick="navigateTo('ulangkaji')" data-nav="ulangkaji" class="desktop-nav nav-item-link px-3 py-2.5 rounded-xl text-sm font-medium text-white/85 hover:text-white transition-colors duration-150 cursor-pointer">Ulang Kaji</button>
+                    <button type="button" onclick="scrollToAdab()" data-nav="adab" class="desktop-nav nav-item-link px-3 py-2.5 rounded-xl text-sm font-medium text-white/85 hover:text-white transition-colors duration-150 cursor-pointer">Adab &amp; Nasihat</button>
+                </nav>
+
+                <!-- Butang Menu Tablet & Telefon -->
+                <div class="lg:hidden">
+                    <button id="mobile-menu-toggle" type="button" onclick="toggleMobileMenu()" class="p-3 rounded-xl bg-deepTeal-800 hover:bg-deepTeal-700 text-mutedMustard-200 border border-white/15 transition-colors duration-150 cursor-pointer" aria-label="Buka atau tutup menu navigasi" aria-expanded="false">
+                        <i id="mobile-menu-icon" data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dropdown Menu Mudah Alih -->
+        <div id="mobile-menu-drawer" class="hidden lg:hidden bg-deepTeal-800 border-t border-white/10 px-4 py-4 space-y-1.5 shadow-xl">
+            <button type="button" onclick="navigateTo('utama'); closeMobileMenu();" data-nav="utama" class="mobile-nav w-full text-left px-4 py-3 rounded-xl text-sm font-bold bg-mutedMustard-500 text-deepTeal-900 transition-colors duration-150 cursor-pointer">Utama</button>
+            <button type="button" onclick="navigateTo('iqra'); closeMobileMenu();" data-nav="iqra" class="mobile-nav w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-white/90 hover:bg-deepTeal-700 transition-colors duration-150 cursor-pointer">Iqra 1–6</button>
+            <button type="button" onclick="navigateTo('alquran'); closeMobileMenu();" data-nav="alquran" class="mobile-nav w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-white/90 hover:bg-deepTeal-700 transition-colors duration-150 cursor-pointer">Al-Quran Juz 1–30</button>
+            <button type="button" onclick="navigateTo('tajwid'); closeMobileMenu();" data-nav="tajwid" class="mobile-nav w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-white/90 hover:bg-deepTeal-700 transition-colors duration-150 cursor-pointer">Modul Tajwid</button>
+            <button type="button" onclick="navigateTo('doa'); closeMobileMenu();" data-nav="doa" class="mobile-nav w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-white/90 hover:bg-deepTeal-700 transition-colors duration-150 cursor-pointer">Zikir &amp; Doa Harian</button>
+            <button type="button" onclick="navigateTo('ulangkaji'); closeMobileMenu();" data-nav="ulangkaji" class="mobile-nav w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-white/90 hover:bg-deepTeal-700 transition-colors duration-150 cursor-pointer">Panduan Ulang Kaji</button>
+            <button type="button" onclick="scrollToAdab(); closeMobileMenu();" data-nav="adab" class="mobile-nav w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-white/90 hover:bg-deepTeal-700 transition-colors duration-150 cursor-pointer">Adab &amp; Nasihat</button>
+        </div>
+    </header>
+
+    <!-- Kandungan Utama -->
+    <main class="flex-grow">
+
+        <!-- ========================================================= -->
+        <!-- SEKSYEN 1: UTAMA (HERO + PENGAJAR + MODUL + ADAB)         -->
+        <!-- ========================================================= -->
+        <section id="section-utama" class="portal-section section-enter">
+            <!-- Hero Asimetri Berkontras Tinggi -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pt-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+                    <!-- Blok Kiri: Kanvas Utama Deep Teal -->
+                    <div class="lg:col-span-7 relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-deepTeal-800 via-deepTeal-700 to-dustyBlue-800 text-white p-7 sm:p-10 lg:p-12 shadow-lg flex flex-col justify-between border border-deepTeal-600/40">
+                        <div class="absolute inset-0 pattern-dots pointer-events-none"></div>
+                        <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-mutedMustard-500/20 blur-2xl pointer-events-none"></div>
+                        <div class="absolute -left-16 -bottom-16 w-64 h-64 rounded-full bg-terracotta-500/20 blur-2xl pointer-events-none"></div>
+
+                        <div class="relative z-10">
+                            <div class="text-reveal inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 border border-mutedMustard-500/40 text-mutedMustard-200 text-xs font-bold tracking-wider uppercase mb-6">
+                                <span class="w-2 h-2 rounded-full bg-mutedMustard-500"></span>
+                                <span>Portal Rujukan Pembelajaran Murid</span>
+                            </div>
+
+                            <h1 class="text-reveal delay-1 font-display font-extrabold text-4xl sm:text-6xl lg:text-[4rem] tracking-tightDisplay leading-[1.06] text-white mb-5">
+                                RUANG <span class="text-mutedMustard-200 underline decoration-terracotta-500 decoration-[3px] underline-offset-8">NGAJI</span>
+                            </h1>
+
+                            <p class="text-reveal delay-2 text-base sm:text-lg text-white/90 font-normal max-w-xl leading-relaxed mb-8">
+                                “Ruang Belajar, <span class="text-mutedMustard-200 font-bold">Ruang Memperbaiki Bacaan</span>.” — Tempat pelajar menyemak bahan rujukan, mengulang kaji bacaan di rumah, dan mencatat perkara yang ingin dirujuk kepada guru.
+                            </p>
+
+                            <div class="text-reveal delay-3 flex flex-wrap items-center gap-3.5">
+                                <button type="button" onclick="navigateTo('iqra')" class="px-6 py-3.5 rounded-2xl bg-mutedMustard-500 hover:bg-mutedMustard-200 text-deepTeal-900 font-display font-bold text-sm transition-all duration-150 inline-flex items-center gap-2.5 shadow-md hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
+                                    <span>Mula Teroka Iqra 1–6</span>
+                                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </button>
+                                <button type="button" onclick="scrollToAdab()" class="px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium text-sm transition-all duration-150 inline-flex items-center gap-2 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
+                                    <i data-lucide="compass" class="w-4 h-4 text-mutedMustard-200"></i>
+                                    <span>Adab &amp; Nasihat</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Jalur Penunjuk Bahagian di Bawah Hero -->
+                        <div class="relative z-10 mt-10 pt-5 border-t border-white/15 flex flex-wrap items-center justify-between gap-4 text-xs text-white/80">
+                            <span class="font-bold tracking-wide uppercase text-mutedMustard-200">Bimbingan: Ustazah Hanna</span>
+                            <div class="flex flex-wrap items-center gap-3 font-normal">
+                                <span>Iqra 1–6</span>
+                                <span aria-hidden="true">•</span>
+                                <span>Juz 1–30</span>
+                                <span aria-hidden="true">•</span>
+                                <span>Tajwid &amp; Doa</span>
+                                <span aria-hidden="true">•</span>
+                                <span>Ulang Kaji</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blok Kanan Bertingkat: Kad Kaligrafi Mushaf + Kad Pengajar Ustazah Hanna -->
+                    <div class="lg:col-span-5 flex flex-col gap-6">
+                        <!-- Kad Visual Mushaf & Ayat -->
+                        <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-mutedMustard-100 via-warmWhite-rich to-terracotta-100 border border-mutedMustard-500/40 p-6 sm:p-7 shadow-md flex-grow flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-deepTeal-700 text-white text-[11px] font-bold uppercase tracking-wider">Rujukan Bacaan</span>
+                                <span class="w-9 h-9 rounded-xl bg-terracotta-600 text-white flex items-center justify-center shadow-xs float-element">
+                                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                                </span>
+                            </div>
+
+                            <div class="text-center my-2 py-2">
+                                <p class="font-arabic text-3xl sm:text-4xl text-deepTeal-900 leading-relaxed" dir="rtl" lang="ar">
+                                    وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا
+                                </p>
+                                <p class="text-sm font-normal text-slate-800 mt-2">
+                                    “Dan bacalah Al-Quran itu dengan tartil.”
+                                </p>
+                                <p class="text-xs font-bold uppercase tracking-wider text-terracotta-700 mt-1.5">
+                                    Surah Al-Muzzammil (73) • Ayat 4
+                                </p>
+                            </div>
+
+                            <!-- Ilustrasi Vektor Mushaf & Rehal Berwarna Pekat -->
+                            <svg viewBox="0 0 280 96" class="w-full h-24 mx-auto mt-1" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M84 88L128 56H152L196 88" stroke="#285C60" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M52 24C84 20 114 28 140 44V68C114 54 84 48 52 52V24Z" fill="#FFFFFF" stroke="#285C60" stroke-width="2.5"/>
+                                <path d="M228 24C196 20 166 28 140 44V68C166 54 196 48 228 52V24Z" fill="#FFFFFF" stroke="#A3604B" stroke-width="2.5"/>
+                                <path d="M66 34H122M66 43H118" stroke="#49637F" stroke-width="2.5" stroke-linecap="round"/>
+                                <path d="M158 34H214M162 43H214" stroke="#536D5C" stroke-width="2.5" stroke-linecap="round"/>
+                                <path d="M140 44V76L135 71L130 76V46" fill="#B58E43"/>
+                            </svg>
+                        </div>
+
+                        <!-- Kad Pengenalan Pengajar (Ustazah Hanna - Ringkas & Tepat) -->
+                        <div class="rounded-[1.75rem] bg-white border border-deepTeal-600/25 p-6 shadow-sm flex items-center gap-4">
+                            <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-deepTeal-700 text-mutedMustard-200 flex items-center justify-center shrink-0 shadow-xs">
+                                <i data-lucide="user-check" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-deepTeal-700">Pengajar Al-Quran</span>
+                                <h2 class="font-display font-bold text-lg sm:text-xl text-slate-900 leading-snug tracking-tightDisplay">Dibimbing oleh Ustazah Hanna</h2>
+                                <p class="text-sm text-slate-600 mt-1 leading-relaxed">
+                                    Portal rujukan untuk pelajar sedia ada bagi menyemak bahan pembelajaran dan mengulang bacaan mengikut bimbingan pengajar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Susun Atur Modul Utama Bervariasi -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14 scroll-reveal">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                    <div>
+                        <span class="inline-block px-3 py-1 rounded-lg bg-deepTeal-100 text-deepTeal-800 text-xs font-bold uppercase tracking-wider mb-2">Peta Rujukan</span>
+                        <h2 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 tracking-tightDisplay">Modul Pembelajaran Utama</h2>
+                    </div>
+                    <p class="text-sm sm:text-base font-normal text-slate-600 max-w-md leading-relaxed">Pilih bahagian yang ingin dibuka untuk menyemak topik, bahan rujukan, atau langkah ulang kaji di rumah.</p>
+                </div>
+
+                <!-- Grid 12-Kolum dengan Kad Bervariasi Saiz & Identiti Warna -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                    <!-- Iqra 1–6: Kad Lebar Beraksen Deep Teal -->
+                    <div onclick="navigateTo('iqra')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateTo('iqra');}" class="md:col-span-7 interactive-card cursor-pointer rounded-[2rem] bg-gradient-to-br from-deepTeal-700 to-deepTeal-800 text-white p-7 sm:p-8 shadow-md hover:shadow-xl flex flex-col justify-between group border border-deepTeal-600">
+                        <div>
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="px-3.5 py-1 rounded-full bg-mutedMustard-500 text-deepTeal-900 text-xs font-bold uppercase tracking-wider">Tahap 1 hingga 6</span>
+                                <div class="w-12 h-12 rounded-2xl bg-white/15 text-mutedMustard-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-150">
+                                    <i data-lucide="layers" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-display font-extrabold text-2xl sm:text-3xl tracking-tightDisplay mb-2">Iqra 1–6</h3>
+                            <p class="text-sm sm:text-base text-white/85 max-w-lg leading-relaxed mb-6">
+                                Semak ringkasan topik bagi setiap tahap bermula daripada mengenal huruf hijaiyyah dan baris sehingga asas hukum bacaan dan tajwid.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-white/15 flex items-center justify-between text-sm font-bold text-mutedMustard-200">
+                            <span>Buka Modul Iqra 1–6</span>
+                            <span class="w-9 h-9 rounded-full bg-mutedMustard-500 text-deepTeal-900 flex items-center justify-center group-hover:translate-x-0.5 transition-transform duration-150">
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Al-Quran Juz 1–30: Kad Sisi Beraksen Dusty Blue -->
+                    <div onclick="navigateTo('alquran')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateTo('alquran');}" class="md:col-span-5 interactive-card cursor-pointer rounded-[2rem] bg-dustyBlue-700 text-white p-7 sm:p-8 shadow-md hover:shadow-xl flex flex-col justify-between group border border-dustyBlue-600">
+                        <div>
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="px-3.5 py-1 rounded-full bg-white/15 text-white text-xs font-bold uppercase tracking-wider">30 Bahagian</span>
+                                <div class="w-12 h-12 rounded-2xl bg-dustyBlue-800 text-mutedMustard-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-150">
+                                    <i data-lucide="book-marked" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-display font-extrabold text-2xl sm:text-3xl tracking-tightDisplay mb-2">Al-Quran Juz 1–30</h3>
+                            <p class="text-sm text-white/85 leading-relaxed mb-6">
+                                Buka mushaf Al-Quran lengkap dan kenali ringkasan kandungan serta pengajaran bagi setiap Juzuk 1 hingga 30.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-white/15 flex items-center justify-between text-sm font-bold text-white">
+                            <span>Buka Juz 1–30</span>
+                            <span class="w-9 h-9 rounded-full bg-white text-dustyBlue-800 flex items-center justify-center group-hover:translate-x-0.5 transition-transform duration-150">
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Modul Tajwid: Kad Beraksen Sage Green -->
+                    <div onclick="navigateTo('tajwid')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateTo('tajwid');}" class="md:col-span-4 interactive-card cursor-pointer rounded-[2rem] bg-sageGreen-700 text-white p-7 sm:p-8 shadow-md hover:shadow-xl flex flex-col justify-between group border border-sageGreen-600">
+                        <div>
+                            <div class="flex items-center justify-between mb-5">
+                                <span class="px-3.5 py-1 rounded-full bg-white/15 text-white text-xs font-bold uppercase tracking-wider">Nota PDF Lengkap</span>
+                                <div class="w-12 h-12 rounded-2xl bg-sageGreen-800 text-mutedMustard-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-150">
+                                    <i data-lucide="file-text" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-display font-extrabold text-2xl tracking-tightDisplay mb-2">Modul Tajwid</h3>
+                            <p class="text-sm text-white/85 leading-relaxed mb-6">
+                                Buka bahagian nota PDF tajwid lengkap dan semak catatan penerangan pengajar serta rujukan sumber ilmiah.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-white/15 flex items-center justify-between text-sm font-bold text-white">
+                            <span>Ke Modul Tajwid</span>
+                            <span class="w-9 h-9 rounded-full bg-white text-sageGreen-800 flex items-center justify-center group-hover:translate-x-0.5 transition-transform duration-150">
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Zikir & Doa Harian: Kad Beraksen Terracotta -->
+                    <div onclick="navigateTo('doa')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateTo('doa');}" class="md:col-span-4 interactive-card cursor-pointer rounded-[2rem] bg-terracotta-700 text-white p-7 sm:p-8 shadow-md hover:shadow-xl flex flex-col justify-between group border border-terracotta-600">
+                        <div>
+                            <div class="flex items-center justify-between mb-5">
+                                <span class="px-3.5 py-1 rounded-full bg-white/15 text-white text-xs font-bold uppercase tracking-wider">Amalan Sahih</span>
+                                <div class="w-12 h-12 rounded-2xl bg-terracotta-800 text-mutedMustard-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-150">
+                                    <i data-lucide="heart-handshake" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-display font-extrabold text-2xl tracking-tightDisplay mb-2">Zikir &amp; Doa Harian</h3>
+                            <p class="text-sm text-white/85 leading-relaxed mb-6">
+                                Amalan doa dan zikir pendek berserta teks Arab, bacaan Rumi, maksud, kelebihan, dan sumber dalil yang sahih.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-white/15 flex items-center justify-between text-sm font-bold text-white">
+                            <span>Buka Zikir &amp; Doa</span>
+                            <span class="w-9 h-9 rounded-full bg-white text-terracotta-800 flex items-center justify-center group-hover:translate-x-0.5 transition-transform duration-150">
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Panduan Ulang Kaji: Kad Beraksen Dusty Rose -->
+                    <div onclick="navigateTo('ulangkaji')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateTo('ulangkaji');}" class="md:col-span-4 interactive-card cursor-pointer rounded-[2rem] bg-dustyRose-700 text-white p-7 sm:p-8 shadow-md hover:shadow-xl flex flex-col justify-between group border border-dustyRose-600">
+                        <div>
+                            <div class="flex items-center justify-between mb-5">
+                                <span class="px-3.5 py-1 rounded-full bg-mutedMustard-500 text-deepTeal-900 text-xs font-bold uppercase tracking-wider">Latihan Kendiri</span>
+                                <div class="w-12 h-12 rounded-2xl bg-dustyRose-800 text-mutedMustard-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-150">
+                                    <i data-lucide="repeat" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-display font-extrabold text-2xl tracking-tightDisplay mb-2">Panduan Ulang Kaji</h3>
+                            <p class="text-sm text-white/85 leading-relaxed mb-6">
+                                Panduan ringkas dan praktikal untuk mengulang kaji Iqra dan Al-Quran di rumah supaya bacaan lebih kemas.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-white/15 flex items-center justify-between text-sm font-bold text-white">
+                            <span>Buka Panduan Ulang Kaji</span>
+                            <span class="w-9 h-9 rounded-full bg-white text-dustyRose-800 flex items-center justify-center group-hover:translate-x-0.5 transition-transform duration-150">
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- BAHAGIAN: ADAB & NASIHAT MENUNTUT AL-QURAN                -->
+            <!-- ========================================================= -->
+            <div id="adab-nasihat-anchor" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 scroll-mt-24">
+                <div class="rounded-[2.25rem] bg-gradient-to-b from-warmWhite-rich via-white to-warmWhite-rich border border-deepTeal-600/20 p-6 sm:p-10 lg:p-12 shadow-sm">
+
+                    <!-- Pengenalan Storytelling -->
+                    <div class="scroll-reveal max-w-3xl mx-auto text-center mb-10 sm:mb-12">
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-deepTeal-100 text-deepTeal-800 text-xs font-bold uppercase tracking-wider mb-4">
+                            <i data-lucide="compass" class="w-3.5 h-3.5 text-terracotta-700"></i>
+                            <span>Adab &amp; Nasihat Menuntut Al-Quran</span>
+                        </div>
+                        <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-[2.6rem] text-slate-900 tracking-tightDisplay leading-tight mb-4">
+                            Sepanjang Perjalanan Bersama Al-Quran
+                        </h2>
+                        <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                            Setiap orang memulakan langkah yang berbeza. Ada yang baru mengenal huruf, ada yang sedang memperbetulkan makhraj, dan ada yang sedang belajar menyambung ayat. Pesanan ringkas ini disusun untuk menemani langkah anda perlahan-lahan.
+                        </p>
+
+                        <!-- Ilustrasi Minimal: Mushaf, Cahaya & Helaian Nota -->
+                        <div class="mt-6 flex justify-center" aria-hidden="true">
+                            <svg viewBox="0 0 320 68" class="w-64 sm:w-72 h-16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M160 6V15M136 12L141 19M184 12L179 19" stroke="#D3AE65" stroke-width="2.2" stroke-linecap="round"/>
+                                <circle cx="160" cy="24" r="4" fill="#D3AE65"/>
+                                <path d="M88 38C114 34 138 40 160 52V62C138 51 114 46 88 50V38Z" fill="#EAF3F3" stroke="#285C60" stroke-width="2"/>
+                                <path d="M232 38C206 34 182 40 160 52V62C182 51 206 46 232 50V38Z" fill="#FBF6EA" stroke="#A3604B" stroke-width="2"/>
+                                <path d="M40 46H70M46 54H68" stroke="#6E8877" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M250 46H280M252 54H274" stroke="#647F9C" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Susunan Berperingkat: 9 Kad Pesanan Perjalanan -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+                        <!-- Langkah 1 -->
+                        <div class="scroll-reveal rounded-[1.75rem] bg-white border border-deepTeal-600/20 p-6 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-deepTeal-50 text-deepTeal-800 text-xs font-bold">Langkah 01</span>
+                                    <span class="w-9 h-9 rounded-xl bg-deepTeal-700 text-mutedMustard-200 flex items-center justify-center">
+                                        <i data-lucide="heart" class="w-4 h-4"></i>
+                                    </span>
+                                </div>
+                                <h3 class="font-display font-bold text-lg text-slate-900 tracking-tightDisplay mb-2">Betulkan Niat Sejak Awal</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Kita belajar membaca Al-Quran untuk mencari reda Allah dan memahami kalam-Nya, bukan untuk dipuji atau sekadar menyelesaikan kelas. Niat yang ikhlas membuatkan hati lebih tenang.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 2 -->
+                        <div class="scroll-reveal rounded-[1.75rem] bg-white border border-dustyBlue-600/20 p-6 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-dustyBlue-50 text-dustyBlue-800 text-xs font-bold">Langkah 02</span>
+                                    <span class="w-9 h-9 rounded-xl bg-dustyBlue-700 text-white flex items-center justify-center">
+                                        <i data-lucide="sprout" class="w-4 h-4"></i>
+                                    </span>
+                                </div>
+                                <h3 class="font-display font-bold text-lg text-slate-900 tracking-tightDisplay mb-2">Tidak Perlu Malu Bermula dari Asas</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Usia dewasa bukan penghalang untuk mula mengenal huruf atau kembali ke Iqra 1. Keberanian untuk mula belajar pada bila-bila masa jauh lebih bernilai daripada terus bertangguh.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 3 -->
+                        <div class="scroll-reveal rounded-[1.75rem] bg-white border border-sageGreen-600/20 p-6 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-sageGreen-50 text-sageGreen-800 text-xs font-bold">Langkah 03</span>
+                                    <span class="w-9 h-9 rounded-xl bg-sageGreen-700 text-white flex items-center justify-center">
+                                        <i data-lucide="hourglass" class="w-4 h-4"></i>
+                                    </span>
+                                </div>
+                                <h3 class="font-display font-bold text-lg text-slate-900 tracking-tightDisplay mb-2">Bersabar dengan Proses Belajar</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Lidah kita memerlukan masa untuk membiasakan makhraj dan bunyi huruf Arab. Tersasul atau mengulang baris yang sama berkali-kali ialah perkara biasa dalam belajar.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 4 -->
+                        <div class="scroll-reveal rounded-[1.75rem] bg-white border border-mutedMustard-600/30 p-6 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-mutedMustard-50 text-mutedMustard-800 text-xs font-bold">Langkah 04</span>
+                                    <span class="w-9 h-9 rounded-xl bg-mutedMustard-600 text-white flex items-center justify-center">
+                                        <i data-lucide="footprints" class="w-4 h-4"></i>
+                                    </span>
+                                </div>
+                                <h3 class="font-display font-bold text-lg text-slate-900 tracking-tightDisplay mb-2">Jangan Mengejar Kelajuan</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Tidak mengapa jika baru selesai satu muka surat atau beberapa baris. Bacaan yang perlahan tetapi betul jauh lebih baik daripada bacaan laju yang banyak tertinggal hukumnya.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 5 -->
+                        <div class="scroll-reveal rounded-[1.75rem] bg-white border border-terracotta-600/25 p-6 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-terracotta-50 text-terracotta-800 text-xs font-bold">Langkah 05</span>
+                                    <span class="w-9 h-9 rounded-xl bg-terracotta-700 text-white flex items-center justify-center">
+                                        <i data-lucide="message-circle-heart" class="w-4 h-4"></i>
+                                    </span>
+                                </div>
+                                <h3 class="font-display font-bold text-lg text-slate-900 tracking-tightDisplay mb-2">Terima Teguran dengan Hati Terbuka</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Setiap kali guru memperbetulkan bacaan kita, itu tanda bacaan kita sedang dijaga. Anggaplah teguran sebagai bantuan paling berharga agar kesilapan tidak terbawa-bawa.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 6 -->
+                        <div class="scroll-reveal rounded-[1.75rem] bg-white border border-dustyRose-600/25 p-6 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-dustyRose-50 text-dustyRose-800 text-xs font-bold">Langkah 06</span>
+                                    <span class="w-9 h-9 rounded-xl bg-dustyRose-700 text-white flex items-center justify-center">
+                                        <i data-lucide="book-open-check" class="w-4 h-4"></i>
+                                    </span>
+                                </div>
+                                <h3 class="font-display font-bold text-lg text-slate-900 tracking-tightDisplay mb-2">Jaga Adab dengan Guru &amp; Mushaf</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Hormati masa dan bimbingan guru, hadir dalam keadaan bersedia, serta letakkan mushaf atau buku Iqra di tempat yang bersih dan mulia sebagai tanda memuliakan ilmu.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 7 -->
+                        <div class="scroll-reveal rounded-[1.75rem] bg-white border border-deepTeal-600/20 p-6 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-deepTeal-50 text-deepTeal-800 text-xs font-bold">Langkah 07</span>
+                                    <span class="w-9 h-9 rounded-xl bg-deepTeal-800 text-mutedMustard-200 flex items-center justify-center">
+                                        <i data-lucide="repeat" class="w-4 h-4"></i>
+                                    </span>
+                                </div>
+                                <h3 class="font-display font-bold text-lg text-slate-900 tracking-tightDisplay mb-2">Teruskan Ulang Kaji &amp; Istiqamah</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Kelas seminggu sekali atau dua kali hanya permulaan. Luangkan masa di rumah walaupun sebentar setiap hari untuk mengulang muka surat yang sama supaya lidah kekal lembut.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 8 -->
+                        <div class="scroll-reveal rounded-[1.75rem] bg-white border border-dustyBlue-600/20 p-6 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-dustyBlue-50 text-dustyBlue-800 text-xs font-bold">Langkah 08</span>
+                                    <span class="w-9 h-9 rounded-xl bg-dustyBlue-800 text-white flex items-center justify-center">
+                                        <i data-lucide="user-check" class="w-4 h-4"></i>
+                                    </span>
+                                </div>
+                                <h3 class="font-display font-bold text-lg text-slate-900 tracking-tightDisplay mb-2">Jangan Bandingkan Diri dengan Orang Lain</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Latar belakang dan kesibukan setiap pelajar tidak sama. Fokus sahaja pada kemajuan diri kita hari ini berbanding semalam, tanpa rasa rendah diri melihat pencapaian orang lain.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 9 -->
+                        <div class="scroll-reveal rounded-[1.75rem] bg-white border border-sageGreen-600/20 p-6 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-sageGreen-50 text-sageGreen-800 text-xs font-bold">Langkah 09</span>
+                                    <span class="w-9 h-9 rounded-xl bg-sageGreen-800 text-white flex items-center justify-center">
+                                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                                    </span>
+                                </div>
+                                <h3 class="font-display font-bold text-lg text-slate-900 tracking-tightDisplay mb-2">Sentiasa Berusaha Memperbaiki Bacaan</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Walaupun sudah lancar membaca, sentiasa ada ruang untuk memperkemas tajwid dan sifat huruf. Usaha kecil yang berterusan itulah yang menjadi tanda cinta kita kepada Al-Quran.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bahagian Kelebihan Orang yang Mempelajari Al-Quran (4 Hadis Sahih) -->
+                    <div class="scroll-reveal mb-10">
+                        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+                            <div>
+                                <span class="inline-block px-3 py-1 rounded-lg bg-mutedMustard-200/80 text-mutedMustard-800 text-xs font-bold uppercase tracking-wider mb-1.5">Berita Gembira daripada Hadis Sahih</span>
+                                <h3 class="font-display font-bold text-2xl sm:text-3xl text-slate-900 tracking-tightDisplay">Kemuliaan di Sebalik Setiap Usaha</h3>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-600 max-w-md">Setiap huruf yang disebut dan setiap kesukaran yang dilalui ketika belajar mempunyai nilai di sisi Allah.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <!-- Hadis 1: Sahih al-Bukhari 4937 & Sahih Muslim 798 -->
+                            <div class="rounded-[1.75rem] bg-white border border-deepTeal-600/25 p-6 shadow-2xs flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-3">
+                                        <span class="px-3 py-1 rounded-full bg-deepTeal-100 text-deepTeal-900 text-xs font-bold">Dua Ganjaran Bagi yang Sukar Membaca</span>
+                                        <i data-lucide="award" class="w-4 h-4 text-deepTeal-700 shrink-0"></i>
+                                    </div>
+                                    <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                                        Rasulullah SAW bersabda bahawa orang yang mahir membaca Al-Quran akan bersama para malaikat yang mulia lagi taat, manakala orang yang membaca Al-Quran dalam keadaan tergagap-gagap serta terasa sukar baginya akan memperoleh <strong>dua ganjaran</strong> (ganjaran membaca dan ganjaran kesungguhannya).
+                                    </p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs font-bold text-deepTeal-800">
+                                    <span>Sumber Sahih</span>
+                                    <span>Sahih al-Bukhari (4937) &amp; Sahih Muslim (798)</span>
+                                </div>
+                            </div>
+
+                            <!-- Hadis 2: Sahih al-Bukhari 5027 -->
+                            <div class="rounded-[1.75rem] bg-white border border-sageGreen-600/25 p-6 shadow-2xs flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-3">
+                                        <span class="px-3 py-1 rounded-full bg-sageGreen-100 text-sageGreen-900 text-xs font-bold">Sebaik-baik Manusia</span>
+                                        <i data-lucide="book-marked" class="w-4 h-4 text-sageGreen-700 shrink-0"></i>
+                                    </div>
+                                    <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                                        Daripada Uthman bin Affan r.a., Nabi SAW bersabda: <em>“Sebaik-baik kalian adalah orang yang mempelajari Al-Quran dan mengajarkannya.”</em>
+                                    </p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs font-bold text-sageGreen-800">
+                                    <span>Sumber Sahih</span>
+                                    <span>Sahih al-Bukhari (5027)</span>
+                                </div>
+                            </div>
+
+                            <!-- Hadis 3: Sahih Muslim 804 (Al-Quran Sebagai Syafaat) -->
+                            <div class="rounded-[1.75rem] bg-white border border-terracotta-600/25 p-6 shadow-2xs flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-3">
+                                        <span class="px-3 py-1 rounded-full bg-terracotta-100 text-terracotta-900 text-xs font-bold">Syafaat pada Hari Kiamat</span>
+                                        <i data-lucide="sun" class="w-4 h-4 text-terracotta-700 shrink-0"></i>
+                                    </div>
+                                    <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                                        Daripada Abu Umamah al-Bahili r.a., Rasulullah SAW bersabda: <em>“Bacalah Al-Quran, kerana sesungguhnya ia akan datang pada hari kiamat sebagai pemberi syafaat kepada para pembacanya.”</em>
+                                    </p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs font-bold text-terracotta-800">
+                                    <span>Sumber Sahih</span>
+                                    <span>Sahih Muslim (804)</span>
+                                </div>
+                            </div>
+
+                            <!-- Hadis 4: Sahih Muslim 798 (Bacaan Mahir & Kesungguhan) -->
+                            <div class="rounded-[1.75rem] bg-white border border-dustyBlue-600/25 p-6 shadow-2xs flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-3">
+                                        <span class="px-3 py-1 rounded-full bg-dustyBlue-100 text-dustyBlue-900 text-xs font-bold">Kemuliaan Pembaca yang Tekun</span>
+                                        <i data-lucide="sparkles" class="w-4 h-4 text-dustyBlue-700 shrink-0"></i>
+                                    </div>
+                                    <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                                        Daripada Aisyah r.a., Nabi SAW menjelaskan bahawa kedudukan orang yang membaca Al-Quran dengan mahir berada bersama para utusan (malaikat) yang mulia lagi berbakti, manakala yang bersusah payah mempelajarinya tetap dimuliakan dengan dua ganjaran.
+                                    </p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs font-bold text-dustyBlue-800">
+                                    <span>Sumber Sahih</span>
+                                    <span>Sahih Muslim (798)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Penutup Memberi Semangat -->
+                    <div class="scroll-reveal rounded-[2rem] bg-gradient-to-br from-deepTeal-800 via-deepTeal-900 to-dustyBlue-900 text-white p-7 sm:p-9 shadow-md relative overflow-hidden border border-mutedMustard-500/30">
+                        <div class="absolute inset-0 pattern-dots pointer-events-none"></div>
+                        <div class="relative z-10 max-w-3xl mx-auto text-center">
+                            <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-mutedMustard-500 text-deepTeal-900 text-xs font-bold uppercase tracking-wider mb-4">
+                                <i data-lucide="heart-handshake" class="w-3.5 h-3.5"></i>
+                                <span>Pesanan Buat Pelajar</span>
+                            </span>
+                            <p class="font-display font-bold text-lg sm:text-2xl text-white leading-relaxed mb-5">
+                                “Jangan rasa rendah diri kerana masih belajar. Mungkin bacaan kita belum sempurna, tetapi jangan berhenti berusaha mendekati kalam Allah. Setiap proses pembelajaran memerlukan kesabaran dan kesungguhan.”
+                            </p>
+                            <div class="flex flex-wrap items-center justify-center gap-3">
+                                <button type="button" onclick="navigateTo('iqra')" class="px-5 py-2.5 rounded-xl bg-mutedMustard-500 hover:bg-mutedMustard-200 text-deepTeal-900 text-xs sm:text-sm font-bold transition-colors duration-150 cursor-pointer">
+                                    Teruskan dengan Iqra 1–6
+                                </button>
+                                <button type="button" onclick="navigateTo('alquran')" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-bold transition-colors duration-150 cursor-pointer">
+                                    Teroka Al-Quran Juz 1–30
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SEKSYEN 2: MODUL IQRA 1–6                                   -->
+        <!-- ========================================================= -->
+        <section id="section-iqra" class="portal-section section-enter hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+            <div class="mb-6">
+                <button type="button" onclick="navigateTo('utama')" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-deepTeal-50 text-deepTeal-800 border border-deepTeal-600/25 text-xs font-bold shadow-2xs transition-colors duration-150 cursor-pointer">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Kembali ke Utama</span>
+                </button>
+            </div>
+
+            <div class="rounded-[2rem] bg-deepTeal-800 text-white p-7 sm:p-10 mb-6 shadow-lg relative overflow-hidden border border-deepTeal-700">
+                <div class="absolute inset-0 pattern-dots pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div>
+                        <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-mutedMustard-500 text-deepTeal-900 text-xs font-bold uppercase tracking-wider mb-3">
+                            <i data-lucide="layers" class="w-3.5 h-3.5"></i> Asas Bacaan Bertahap
+                        </span>
+                        <h2 class="font-display font-extrabold text-3xl sm:text-5xl tracking-tightDisplay text-white">Modul Iqra 1–6</h2>
+                        <p class="text-sm sm:text-base text-white/85 mt-2 max-w-2xl leading-relaxed">
+                            Pilih mana-mana kad Iqra di bawah untuk melihat senarai topik bagi tahap tersebut dan menyemak ruang nota PDF yang berkaitan.
+                        </p>
+                    </div>
+                    <div class="bg-white/10 border border-white/15 rounded-2xl px-5 py-4 shrink-0">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-mutedMustard-200">Rujukan Tahap</span>
+                        <span class="font-display font-bold text-lg sm:text-xl text-white">6 Tahap Pembelajaran</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-2xl bg-mutedMustard-100/80 border border-mutedMustard-500/45 p-4 sm:p-5 mb-8 flex items-start gap-3.5">
+                <div class="w-9 h-9 rounded-xl bg-mutedMustard-600 text-white flex items-center justify-center shrink-0 mt-0.5">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                </div>
+                <p class="text-sm text-slate-800 leading-relaxed">
+                    <strong class="font-bold text-slate-900">Catatan Edisi &amp; Bimbingan:</strong> Senarai topik pada setiap kad ialah rujukan umum mengikut tahap. Urutan halaman atau pecahannya boleh berbeza mengikut cetakan buku Iqra yang digunakan dan semakan <strong class="font-bold text-deepTeal-800">Ustazah Hanna</strong>.
+                </p>
+            </div>
+
+            <div id="iqra-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dijana melalui JavaScript -->
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SEKSYEN 3: AL-QURAN JUZ 1–30 (1 BUTANG PDF + AKORDION)    -->
+        <!-- ========================================================= -->
+        <section id="section-alquran" class="portal-section section-enter hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+            <div class="mb-6">
+                <button type="button" onclick="navigateTo('utama')" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-dustyBlue-50 text-dustyBlue-800 border border-dustyBlue-600/25 text-xs font-bold shadow-2xs transition-colors duration-150 cursor-pointer">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Kembali ke Utama</span>
+                </button>
+            </div>
+
+            <!-- Banner Utama & Satu Butang PDF Al-Quran Lengkap -->
+            <div class="rounded-[2rem] bg-gradient-to-r from-dustyBlue-800 via-dustyBlue-700 to-deepTeal-800 text-white p-7 sm:p-10 mb-6 shadow-lg relative overflow-hidden">
+                <div class="absolute inset-0 pattern-dots pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div>
+                        <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/15 text-mutedMustard-200 text-xs font-bold uppercase tracking-wider mb-3">
+                            <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Mushaf Lengkap 30 Juzuk
+                        </span>
+                        <h2 class="font-display font-extrabold text-3xl sm:text-5xl tracking-tightDisplay text-white">Al-Quran Juz 1–30</h2>
+                        <p class="text-sm sm:text-base text-white/85 mt-2 max-w-2xl leading-relaxed">
+                            Buka naskhah penuh Al-Quran melalui butang di sebelah kanan, dan tekan mana-mana Juz 1 hingga 30 di bawah untuk menyemak julat muka surat Mushaf serta tadabbur ringkasnya.
+                        </p>
+                    </div>
+
+                    <!-- Satu Butang Sahaja Untuk Keseluruhan Al-Quran PDF -->
+                    <div class="shrink-0 flex flex-col items-start lg:items-end gap-2">
+                        <button type="button" onclick="openFullAlQuranPdf()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-mutedMustard-500 hover:bg-mutedMustard-200 text-deepTeal-900 font-display font-extrabold text-sm sm:text-base transition-all duration-150 inline-flex items-center justify-center gap-2.5 shadow-md hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
+                            <i data-lucide="file-down" class="w-5 h-5"></i>
+                            <span>Buka Al-Quran Lengkap (PDF)</span>
+                        </button>
+                        <span class="text-xs font-medium text-mutedMustard-200 inline-flex items-center gap-1.5">
+                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                            <span>Mushaf Rasm Uthmani (30 Juz Lengkap)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nota Garis Panduan Mushaf -->
+            <div class="rounded-2xl bg-dustyBlue-50 border border-dustyBlue-200 p-4 sm:p-5 mb-8 flex items-start gap-3.5">
+                <div class="w-9 h-9 rounded-xl bg-dustyBlue-700 text-white flex items-center justify-center shrink-0 mt-0.5">
+                    <i data-lucide="book-check" class="w-5 h-5"></i>
+                </div>
+                <p class="text-sm text-slate-800 leading-relaxed">
+                    <strong class="font-bold text-dustyBlue-800">Rujukan Mushaf &amp; Tadabbur:</strong> Julat muka surat merujuk susunan Mushaf Rasm Uthmani (604 halaman). Ringkasan kandungan di bawah disusun secara faktual berdasarkan terjemahan dan huraian dalam <em>Tafsir Pimpinan Ar-Rahman</em> (JAKIM) serta <em>Tafsir Ibn Kathir</em> berserta rujukan surah dan ayat yang tepat.
+                </p>
+            </div>
+
+            <!-- Senarai Juz 1 hingga 30 Boleh Ditekan / Dikembangkan (Tanpa Butang PDF Berulang) -->
+            <div id="juzuk-accordion-container" class="space-y-3.5">
+                <!-- Dijana melalui JavaScript -->
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SEKSYEN 4: MODUL TAJWID                                   -->
+        <!-- ========================================================= -->
+        <section id="section-tajwid" class="portal-section section-enter hidden max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+            <div class="mb-6">
+                <button type="button" onclick="navigateTo('utama')" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-sageGreen-50 text-sageGreen-800 border border-sageGreen-600/25 text-xs font-bold shadow-2xs transition-colors duration-150 cursor-pointer">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Kembali ke Utama</span>
+                </button>
+            </div>
+
+            <div class="rounded-[2rem] bg-sageGreen-800 text-white p-7 sm:p-10 mb-8 shadow-lg relative overflow-hidden">
+                <div class="absolute inset-0 pattern-dots pointer-events-none"></div>
+                <div class="relative z-10">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-mutedMustard-500 text-deepTeal-900 text-xs font-bold uppercase tracking-wider mb-3">
+                        <i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Bahan PDF Lengkap
+                    </span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl tracking-tightDisplay text-white">Modul Tajwid</h2>
+                    <p class="text-sm sm:text-base text-white/85 mt-2 max-w-2xl leading-relaxed">
+                        Halaman ini menyediakan satu ruang bahan PDF tajwid lengkap untuk dirujuk oleh pelajar bersama catatan sumber yang jelas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="rounded-[2rem] bg-white border border-sageGreen-600/30 p-6 sm:p-9 shadow-md">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-5 pb-6 border-b border-slate-200">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-sageGreen-700 text-mutedMustard-200 flex items-center justify-center shrink-0 shadow-xs">
+                        <i data-lucide="file-text" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-sageGreen-700">Rujukan Utama Tajwid</span>
+                        <h3 class="font-display font-bold text-2xl sm:text-3xl tracking-tightDisplay text-slate-900 mt-0.5">Nota Rujukan Tajwid Lengkap</h3>
+                        <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">
+                            Apabila fail PDF lengkap telah sedia, alamat fail boleh dimasukkan pada <code class="px-2 py-0.5 rounded-md bg-sageGreen-50 text-sageGreen-800 font-bold border border-sageGreen-200 text-xs">TAJWID_PDF_URL</code> dalam kod agar butang di bawah terus membuka dokumen tersebut.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                    <div class="rounded-2xl bg-deepTeal-50 border border-deepTeal-200 p-4 sm:p-5">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-deepTeal-800 mb-1.5">Nota Penerangan Pengajar</span>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Catatan ulang kaji dan peringatan praktik bacaan yang merujuk kepada bimbingan <strong class="font-bold text-deepTeal-900">Ustazah Hanna</strong>.
+                        </p>
+                    </div>
+                    <div class="rounded-2xl bg-sageGreen-50 border border-sageGreen-200 p-4 sm:p-5">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-sageGreen-800 mb-1.5">Rujukan Sumber Ilmiah</span>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Disemak berpandukan Garis Panduan Teks Al-Quran dan Tajwid Berwarna (KDN), JAKIM, Pejabat Mufti Wilayah Persekutuan, serta kitab tajwid muktabar.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+                    <p id="tajwid-status-label" class="text-xs font-bold text-slate-600">Status pautan: Belum ditetapkan</p>
+                    <button type="button" onclick="openTajwidCompletePdf()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-sageGreen-700 hover:bg-sageGreen-800 text-white font-display font-bold text-sm transition-all duration-150 inline-flex items-center justify-center gap-2.5 shadow-md hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
+                        <i data-lucide="file-down" class="w-4 h-4 text-mutedMustard-200"></i>
+                        <span>Buka / Muat Turun PDF Lengkap</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SEKSYEN 5: ZIKIR & DOA HARIAN (SAHIH + KELEBIHAN AMALAN)  -->
+        <!-- ========================================================= -->
+        <section id="section-doa" class="portal-section section-enter hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+            <div class="mb-6">
+                <button type="button" onclick="navigateTo('utama')" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-terracotta-50 text-terracotta-800 border border-terracotta-600/25 text-xs font-bold shadow-2xs transition-colors duration-150 cursor-pointer">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Kembali ke Utama</span>
+                </button>
+            </div>
+
+            <div class="rounded-[2rem] bg-gradient-to-br from-terracotta-800 via-terracotta-700 to-dustyRose-800 text-white p-7 sm:p-10 mb-6 shadow-lg relative overflow-hidden">
+                <div class="absolute inset-0 pattern-dots pointer-events-none"></div>
+                <div class="relative z-10">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-mutedMustard-500 text-deepTeal-900 text-xs font-bold uppercase tracking-wider mb-3">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Amalan Ringkas &amp; Bersandarkan Dalil Sahih
+                    </span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl tracking-tightDisplay text-white">Zikir &amp; Doa Harian</h2>
+                    <p class="text-sm sm:text-base text-white/85 mt-2 max-w-2xl leading-relaxed">
+                        Himpunan doa dan zikir pendek yang mudah diamalkan oleh pelajar dewasa berserta teks Arab, bacaan Rumi, maksud, kelebihan berdasarkan dalil, dan sumber yang sahih.
+                    </p>
+                </div>
+            </div>
+
+            <div class="rounded-2xl bg-terracotta-50 border border-terracotta-200 p-4 sm:p-5 mb-8 flex items-start gap-3.5">
+                <div class="w-9 h-9 rounded-xl bg-terracotta-700 text-white flex items-center justify-center shrink-0 mt-0.5">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                </div>
+                <p class="text-sm text-slate-800 leading-relaxed">
+                    <strong class="font-bold text-terracotta-800">Panduan Amalan:</strong> Amalan di bawah dipetik daripada Al-Quran dan hadis-hadis sahih/hasan yang muktabar. Bacaan Rumi disediakan sekadar panduan awal; rujuk sebutan huruf Arab mengikut bacaan sebenar.
+                </p>
+            </div>
+
+            <!-- KATEGORI 1: DOA SEBELUM & SELEPAS BELAJAR -->
+            <div class="mb-10">
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-9 h-9 rounded-xl bg-deepTeal-700 text-mutedMustard-200 flex items-center justify-center shrink-0">
+                        <i data-lucide="book-open-check" class="w-4 h-4"></i>
+                    </span>
+                    <div>
+                        <span class="block text-xs font-bold uppercase tracking-wider text-deepTeal-700">Bahagian 1</span>
+                        <h3 class="font-display font-bold text-xl sm:text-2xl tracking-tightDisplay text-slate-900">Doa Sebelum &amp; Selepas Belajar</h3>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Doa 1: Sebelum Belajar (Surah Taha: 114) -->
+                    <div class="rounded-[2rem] bg-white border border-deepTeal-600/30 p-6 sm:p-7 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-3 mb-4">
+                                <span class="px-3 py-1 rounded-full bg-deepTeal-100 text-deepTeal-800 text-xs font-bold">Sebelum Belajar</span>
+                                <button type="button" onclick="copyAmalanText('doa-belajar-arab', 'Doa Mohon Tambahan Ilmu')" class="px-3 py-1.5 rounded-xl bg-warmWhite-rich hover:bg-deepTeal-50 text-deepTeal-800 border border-slate-200 text-xs font-bold inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                    <span>Salin Arab</span>
+                                </button>
+                            </div>
+
+                            <h4 class="font-display font-bold text-lg text-slate-900 mb-3">Doa Mohon Tambahan Ilmu</h4>
+
+                            <div class="rounded-2xl bg-deepTeal-50/70 border border-deepTeal-200/80 p-5 mb-4 text-right">
+                                <p id="doa-belajar-arab" class="font-arabic text-2xl sm:text-3xl text-deepTeal-900 leading-loose" dir="rtl" lang="ar">
+                                    رَبِّ زِدْنِي عِلْمًا
+                                </p>
+                            </div>
+
+                            <div class="space-y-2.5 text-sm mb-4">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Bacaan Rumi:</span>
+                                    <p class="font-medium text-slate-800 italic">Rabbi zidni 'ilma.</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Maksud:</span>
+                                    <p class="text-slate-700 leading-relaxed">“Wahai Tuhanku, tambahkanlah kepadaku ilmu pengetahuan.”</p>
+                                </div>
+                            </div>
+
+                            <div class="rounded-2xl bg-mutedMustard-50 border border-mutedMustard-200 p-4 mb-5">
+                                <span class="block text-xs font-bold uppercase tracking-wider text-mutedMustard-800 mb-1">Kelebihan &amp; Dalil</span>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                    Allah SWT memerintahkan Nabi Muhammad SAW memohon tambahan ilmu melalui doa ini ketika menerima wahyu Al-Quran, menunjukkan kemuliaan menuntut ilmu agama dan membaca Al-Quran dengan tartil serta kefahaman (<em>Tafsir Ibn Kathir</em>, Surah Taha: 114).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3.5 border-t border-slate-200 flex items-center justify-between text-xs">
+                            <span class="font-bold text-deepTeal-800">Sumber Rujukan:</span>
+                            <span class="font-medium text-slate-600">Al-Quran, Surah Taha (20): 114</span>
+                        </div>
+                    </div>
+
+                    <!-- Doa 2: Selepas Belajar / Penutup Majlis (Kaffarah Majlis) -->
+                    <div class="rounded-[2rem] bg-white border border-deepTeal-600/30 p-6 sm:p-7 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-3 mb-4">
+                                <span class="px-3 py-1 rounded-full bg-deepTeal-100 text-deepTeal-800 text-xs font-bold">Selepas Belajar / Penutup Kelas</span>
+                                <button type="button" onclick="copyAmalanText('doa-selepas-arab', 'Doa Kaffarah Majlis')" class="px-3 py-1.5 rounded-xl bg-warmWhite-rich hover:bg-deepTeal-50 text-deepTeal-800 border border-slate-200 text-xs font-bold inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                    <span>Salin Arab</span>
+                                </button>
+                            </div>
+
+                            <h4 class="font-display font-bold text-lg text-slate-900 mb-3">Doa Kaffarah Majlis</h4>
+
+                            <div class="rounded-2xl bg-deepTeal-50/70 border border-deepTeal-200/80 p-5 mb-4 text-right">
+                                <p id="doa-selepas-arab" class="font-arabic text-2xl sm:text-3xl text-deepTeal-900 leading-loose" dir="rtl" lang="ar">
+                                    سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ
+                                </p>
+                            </div>
+
+                            <div class="space-y-2.5 text-sm mb-4">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Bacaan Rumi:</span>
+                                    <p class="font-medium text-slate-800 italic">Subhanakallahumma wa bihamdika, asyhadu alla ilaha illa anta, astaghfiruka wa atubu ilaik.</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Maksud:</span>
+                                    <p class="text-slate-700 leading-relaxed">“Maha Suci Engkau ya Allah dan segala puji bagi-Mu. Aku bersaksi bahawa tiada Tuhan yang berhak disembah melainkan Engkau. Aku memohon keampunan-Mu dan bertaubat kepada-Mu.”</p>
+                                </div>
+                            </div>
+
+                            <div class="rounded-2xl bg-mutedMustard-50 border border-mutedMustard-200 p-4 mb-5">
+                                <span class="block text-xs font-bold uppercase tracking-wider text-mutedMustard-800 mb-1">Kelebihan &amp; Waktu Amalan</span>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                    Dibaca sebelum bangun meninggalkan sesuatu majlis atau sesi pembelajaran. Rasulullah SAW menyatakan bacaan ini menjadi penghapus (kaffarah) bagi kesilapan atau kelalaian yang berlaku sepanjang majlis tersebut (<em>Sunan al-Tirmizi</em>, no. 3433).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3.5 border-t border-slate-200 flex items-center justify-between text-xs">
+                            <span class="font-bold text-deepTeal-800">Sumber Rujukan:</span>
+                            <span class="font-medium text-slate-600">Sunan al-Tirmizi (Hadis 3433, Hasan Sahih)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KATEGORI 2: DOA HARIAN RINGKAS -->
+            <div class="mb-10">
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-9 h-9 rounded-xl bg-terracotta-700 text-white flex items-center justify-center shrink-0">
+                        <i data-lucide="sun" class="w-4 h-4"></i>
+                    </span>
+                    <div>
+                        <span class="block text-xs font-bold uppercase tracking-wider text-terracotta-700">Bahagian 2</span>
+                        <h3 class="font-display font-bold text-xl sm:text-2xl tracking-tightDisplay text-slate-900">Doa Harian Ringkas</h3>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Doa 3: Doa Kebaikan Dunia & Akhirat (Al-Baqarah: 201) -->
+                    <div class="rounded-[2rem] bg-white border border-terracotta-600/30 p-6 sm:p-7 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-3 mb-4">
+                                <span class="px-3 py-1 rounded-full bg-terracotta-100 text-terracotta-800 text-xs font-bold">Doa Harian</span>
+                                <button type="button" onclick="copyAmalanText('doa-rabbana-arab', 'Doa Kebaikan Dunia dan Akhirat')" class="px-3 py-1.5 rounded-xl bg-warmWhite-rich hover:bg-terracotta-50 text-terracotta-800 border border-slate-200 text-xs font-bold inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                    <span>Salin Arab</span>
+                                </button>
+                            </div>
+
+                            <h4 class="font-display font-bold text-lg text-slate-900 mb-3">Doa Kebaikan Dunia &amp; Akhirat</h4>
+
+                            <div class="rounded-2xl bg-terracotta-50/70 border border-terracotta-200/80 p-5 mb-4 text-right">
+                                <p id="doa-rabbana-arab" class="font-arabic text-2xl sm:text-3xl text-slate-900 leading-loose" dir="rtl" lang="ar">
+                                    رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ
+                                </p>
+                            </div>
+
+                            <div class="space-y-2.5 text-sm mb-4">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Bacaan Rumi:</span>
+                                    <p class="font-medium text-slate-800 italic">Rabbana atina fid-dunya hasanah, wa fil-akhirati hasanah, wa qina 'azaban-nar.</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Maksud:</span>
+                                    <p class="text-slate-700 leading-relaxed">“Wahai Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, serta peliharalah kami daripada azab neraka.”</p>
+                                </div>
+                            </div>
+
+                            <div class="rounded-2xl bg-mutedMustard-50 border border-mutedMustard-200 p-4 mb-5">
+                                <span class="block text-xs font-bold uppercase tracking-wider text-mutedMustard-800 mb-1">Kelebihan &amp; Dalil</span>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                    Anas bin Malik r.a. meriwayatkan bahawa inilah doa yang paling kerap dibaca oleh Nabi Muhammad SAW kerana lafaznya ringkas namun menghimpunkan seluruh kebaikan dunia, akhirat, dan perlindungan daripada neraka (<em>Sahih al-Bukhari</em>, no. 6389; <em>Sahih Muslim</em>, no. 2690).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3.5 border-t border-slate-200 flex items-center justify-between text-xs">
+                            <span class="font-bold text-terracotta-800">Sumber Rujukan:</span>
+                            <span class="font-medium text-slate-600">Surah Al-Baqarah (2): 201 &amp; Sahih Muslim (2690)</span>
+                        </div>
+                    </div>
+
+                    <!-- Doa 4: Doa Ketetapan Hati (Sunan al-Tirmizi: 2140) -->
+                    <div class="rounded-[2rem] bg-white border border-terracotta-600/30 p-6 sm:p-7 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-3 mb-4">
+                                <span class="px-3 py-1 rounded-full bg-terracotta-100 text-terracotta-800 text-xs font-bold">Doa Istiqamah</span>
+                                <button type="button" onclick="copyAmalanText('doa-hati-arab', 'Doa Ketetapan Hati')" class="px-3 py-1.5 rounded-xl bg-warmWhite-rich hover:bg-terracotta-50 text-terracotta-800 border border-slate-200 text-xs font-bold inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                    <span>Salin Arab</span>
+                                </button>
+                            </div>
+
+                            <h4 class="font-display font-bold text-lg text-slate-900 mb-3">Doa Mohon Ketetapan Hati</h4>
+
+                            <div class="rounded-2xl bg-terracotta-50/70 border border-terracotta-200/80 p-5 mb-4 text-right">
+                                <p id="doa-hati-arab" class="font-arabic text-2xl sm:text-3xl text-slate-900 leading-loose" dir="rtl" lang="ar">
+                                    يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ
+                                </p>
+                            </div>
+
+                            <div class="space-y-2.5 text-sm mb-4">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Bacaan Rumi:</span>
+                                    <p class="font-medium text-slate-800 italic">Ya muqallibal-qulub, thabbit qalbi 'ala dinik.</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Maksud:</span>
+                                    <p class="text-slate-700 leading-relaxed">“Wahai Tuhan yang membolak-balikkan hati, tetapkanlah hatiku di atas agama-Mu.”</p>
+                                </div>
+                            </div>
+
+                            <div class="rounded-2xl bg-mutedMustard-50 border border-mutedMustard-200 p-4 mb-5">
+                                <span class="block text-xs font-bold uppercase tracking-wider text-mutedMustard-800 mb-1">Kelebihan &amp; Dalil</span>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                    Umm Salamah r.a. menceritakan bahawa doa ini sangat kerap diamalkan oleh Rasulullah SAW bagi memohon keteguhan iman dan istiqamah dalam ketaatan kerana hati manusia sentiasa berada dalam genggaman kekuasaan Allah (<em>Sunan al-Tirmizi</em>, no. 2140).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3.5 border-t border-slate-200 flex items-center justify-between text-xs">
+                            <span class="font-bold text-terracotta-800">Sumber Rujukan:</span>
+                            <span class="font-medium text-slate-600">Sunan al-Tirmizi (Hadis 2140, Sahih)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KATEGORI 3: ZIKIR RINGKAS HARIAN -->
+            <div>
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-9 h-9 rounded-xl bg-sageGreen-700 text-white flex items-center justify-center shrink-0">
+                        <i data-lucide="heart" class="w-4 h-4"></i>
+                    </span>
+                    <div>
+                        <span class="block text-xs font-bold uppercase tracking-wider text-sageGreen-700">Bahagian 3</span>
+                        <h3 class="font-display font-bold text-xl sm:text-2xl tracking-tightDisplay text-slate-900">Zikir Ringkas Harian</h3>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Zikir 1: Subhanallahi wa bihamdihi, subhanallahil-'Azim -->
+                    <div class="rounded-[2rem] bg-white border border-sageGreen-600/30 p-6 sm:p-7 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-3 mb-4">
+                                <span class="px-3 py-1 rounded-full bg-sageGreen-100 text-sageGreen-800 text-xs font-bold">Zikir Tasbih</span>
+                                <button type="button" onclick="copyAmalanText('zikir-tasbih-arab', 'Zikir Tasbih Ringkas')" class="px-3 py-1.5 rounded-xl bg-warmWhite-rich hover:bg-sageGreen-50 text-sageGreen-800 border border-slate-200 text-xs font-bold inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                    <span>Salin Arab</span>
+                                </button>
+                            </div>
+
+                            <h4 class="font-display font-bold text-lg text-slate-900 mb-3">Dua Kalimah Ringan di Lidah</h4>
+
+                            <div class="rounded-2xl bg-sageGreen-50/70 border border-sageGreen-200/80 p-5 mb-4 text-right">
+                                <p id="zikir-tasbih-arab" class="font-arabic text-2xl sm:text-3xl text-slate-900 leading-loose" dir="rtl" lang="ar">
+                                    سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ
+                                </p>
+                            </div>
+
+                            <div class="space-y-2.5 text-sm mb-4">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Bacaan Rumi:</span>
+                                    <p class="font-medium text-slate-800 italic">Subhanallahi wa bihamdihi, subhanallahil-'Azim.</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Maksud:</span>
+                                    <p class="text-slate-700 leading-relaxed">“Maha Suci Allah dan segala puji bagi-Nya, Maha Suci Allah Yang Maha Agung.”</p>
+                                </div>
+                            </div>
+
+                            <div class="rounded-2xl bg-mutedMustard-50 border border-mutedMustard-200 p-4 mb-5">
+                                <span class="block text-xs font-bold uppercase tracking-wider text-mutedMustard-800 mb-1">Kelebihan &amp; Dalil</span>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                    Rasulullah SAW bersabda bahawa dua kalimah ini ringan diucapkan di lidah, berat pada timbangan amalan (Mizan), dan sangat disukai oleh Allah Yang Maha Pemurah (<em>Sahih al-Bukhari</em>, no. 6406; <em>Sahih Muslim</em>, no. 2694).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3.5 border-t border-slate-200 flex items-center justify-between text-xs">
+                            <span class="font-bold text-sageGreen-800">Sumber Rujukan:</span>
+                            <span class="font-medium text-slate-600">Sahih al-Bukhari (6406) &amp; Sahih Muslim (2694)</span>
+                        </div>
+                    </div>
+
+                    <!-- Zikir 2: Istighfar Ringkas -->
+                    <div class="rounded-[2rem] bg-white border border-sageGreen-600/30 p-6 sm:p-7 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-3 mb-4">
+                                <span class="px-3 py-1 rounded-full bg-sageGreen-100 text-sageGreen-800 text-xs font-bold">Zikir Istighfar</span>
+                                <button type="button" onclick="copyAmalanText('zikir-istighfar-arab', 'Istighfar Ringkas')" class="px-3 py-1.5 rounded-xl bg-warmWhite-rich hover:bg-sageGreen-50 text-sageGreen-800 border border-slate-200 text-xs font-bold inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                    <span>Salin Arab</span>
+                                </button>
+                            </div>
+
+                            <h4 class="font-display font-bold text-lg text-slate-900 mb-3">Istighfar Harian</h4>
+
+                            <div class="rounded-2xl bg-sageGreen-50/70 border border-sageGreen-200/80 p-5 mb-4 text-right">
+                                <p id="zikir-istighfar-arab" class="font-arabic text-2xl sm:text-3xl text-slate-900 leading-loose" dir="rtl" lang="ar">
+                                    أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ
+                                </p>
+                            </div>
+
+                            <div class="space-y-2.5 text-sm mb-4">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Bacaan Rumi:</span>
+                                    <p class="font-medium text-slate-800 italic">Astaghfirullaha wa atubu ilaih.</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Maksud:</span>
+                                    <p class="text-slate-700 leading-relaxed">“Aku memohon keampunan kepada Allah dan aku bertaubat kepada-Nya.”</p>
+                                </div>
+                            </div>
+
+                            <div class="rounded-2xl bg-mutedMustard-50 border border-mutedMustard-200 p-4 mb-5">
+                                <span class="block text-xs font-bold uppercase tracking-wider text-mutedMustard-800 mb-1">Kelebihan &amp; Bilangan Amalan</span>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                    Nabi Muhammad SAW beristighfar dan bertaubat kepada Allah lebih daripada 70 kali dalam sehari (<em>Sahih al-Bukhari</em>, no. 6307), dan dalam riwayat lain sebanyak 100 kali sehari (<em>Sahih Muslim</em>, no. 2702).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3.5 border-t border-slate-200 flex items-center justify-between text-xs">
+                            <span class="font-bold text-sageGreen-800">Sumber Rujukan:</span>
+                            <span class="font-medium text-slate-600">Sahih al-Bukhari (6307) &amp; Sahih Muslim (2702)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SEKSYEN 6: PANDUAN ULANG KAJI (PADAT & PRAKTIKAL)          -->
+        <!-- ========================================================= -->
+        <section id="section-ulangkaji" class="portal-section section-enter hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+            <div class="mb-6">
+                <button type="button" onclick="navigateTo('utama')" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-deepTeal-50 text-deepTeal-800 border border-deepTeal-600/25 text-xs font-bold shadow-2xs transition-colors duration-150 cursor-pointer">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Kembali ke Utama</span>
+                </button>
+            </div>
+
+            <div class="rounded-[2rem] bg-deepTeal-900 text-white p-7 sm:p-10 mb-8 shadow-lg relative overflow-hidden border border-mutedMustard-500/25">
+                <div class="absolute inset-0 pattern-dots pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div>
+                        <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-mutedMustard-500 text-deepTeal-900 text-xs font-bold uppercase tracking-wider mb-3">
+                            <i data-lucide="repeat" class="w-3.5 h-3.5"></i> Panduan Praktikal di Rumah
+                        </span>
+                        <h2 class="font-display font-extrabold text-3xl sm:text-5xl tracking-tightDisplay text-white">Panduan Ulang Kaji</h2>
+                        <p class="text-sm sm:text-base text-white/85 mt-2 max-w-2xl leading-relaxed">
+                            Langkah ringkas dan praktikal untuk mengulang bacaan Iqra dan Al-Quran di rumah sebelum sesi kelas seterusnya.
+                        </p>
+                    </div>
+                    <div class="bg-white/10 border border-white/15 rounded-2xl px-5 py-4 shrink-0">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-mutedMustard-200">Prinsip Utama</span>
+                        <span class="font-display font-bold text-base sm:text-lg text-white">Utamakan Betul Sebelum Laju</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 mb-8">
+                <!-- BAHAGIAN 1: ULANG KAJI IQRA -->
+                <div class="rounded-[2rem] bg-white border border-deepTeal-600/30 p-6 sm:p-8 shadow-md">
+                    <div class="flex items-center gap-4 pb-5 mb-6 border-b border-slate-200">
+                        <div class="w-12 h-12 rounded-2xl bg-deepTeal-700 text-mutedMustard-200 flex items-center justify-center shrink-0">
+                            <i data-lucide="layers" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 rounded-md bg-deepTeal-100 text-deepTeal-800 text-[11px] font-bold uppercase tracking-wider mb-1">Bahagian 1</span>
+                            <h3 class="font-display font-bold text-xl sm:text-2xl tracking-tightDisplay text-slate-900">Ulang Kaji Iqra</h3>
+                        </div>
+                    </div>
+
+                    <ol class="space-y-3">
+                        <li class="flex items-start gap-3.5 p-3.5 rounded-2xl bg-warmWhite border border-slate-200/90">
+                            <span class="w-7 h-7 rounded-xl bg-deepTeal-800 text-mutedMustard-200 font-display font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">1</span>
+                            <p class="text-sm text-slate-800 leading-relaxed"><strong>Baca semula muka surat terakhir:</strong> Mulakan dengan muka surat yang baru disemak di kelas sehingga anda boleh membacanya sendiri dengan yakin.</p>
+                        </li>
+                        <li class="flex items-start gap-3.5 p-3.5 rounded-2xl bg-warmWhite border border-slate-200/90">
+                            <span class="w-7 h-7 rounded-xl bg-deepTeal-800 text-mutedMustard-200 font-display font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">2</span>
+                            <p class="text-sm text-slate-800 leading-relaxed"><strong>Jaga sebutan huruf &amp; panjang pendek:</strong> Sebut setiap huruf dengan jelas dan pastikan huruf berbaris satu dibaca pendek tanpa ditarik panjang.</p>
+                        </li>
+                        <li class="flex items-start gap-3.5 p-3.5 rounded-2xl bg-warmWhite border border-slate-200/90">
+                            <span class="w-7 h-7 rounded-xl bg-deepTeal-800 text-mutedMustard-200 font-display font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">3</span>
+                            <p class="text-sm text-slate-800 leading-relaxed"><strong>Ulang bahagian yang tersalah:</strong> Jika tersilap baris atau bunyi huruf, berhenti dan ulang baris tersebut beberapa kali sebelum sambung.</p>
+                        </li>
+                        <li class="flex items-start gap-3.5 p-3.5 rounded-2xl bg-warmWhite border border-slate-200/90">
+                            <span class="w-7 h-7 rounded-xl bg-deepTeal-800 text-mutedMustard-200 font-display font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">4</span>
+                            <p class="text-sm text-slate-800 leading-relaxed"><strong>Semak semula muka surat lama:</strong> Pilih 1–2 muka surat terdahulu secara rawak supaya pelajaran asas tidak lupa.</p>
+                        </li>
+                        <li class="flex items-start gap-3.5 p-3.5 rounded-2xl bg-deepTeal-50 border border-deepTeal-200">
+                            <span class="w-7 h-7 rounded-xl bg-mutedMustard-500 text-deepTeal-900 font-display font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">5</span>
+                            <p class="text-sm font-medium text-slate-900 leading-relaxed"><strong>Tandakan bahagian yang ragu:</strong> Buat tanda kecil pada kalimah yang keliru untuk ditanya terus kepada guru.</p>
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- BAHAGIAN 2: ULANG KAJI AL-QURAN -->
+                <div class="rounded-[2rem] bg-white border border-dustyBlue-600/30 p-6 sm:p-8 shadow-md">
+                    <div class="flex items-center gap-4 pb-5 mb-6 border-b border-slate-200">
+                        <div class="w-12 h-12 rounded-2xl bg-dustyBlue-700 text-mutedMustard-200 flex items-center justify-center shrink-0">
+                            <i data-lucide="book-open" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 rounded-md bg-dustyBlue-100 text-dustyBlue-800 text-[11px] font-bold uppercase tracking-wider mb-1">Bahagian 2</span>
+                            <h3 class="font-display font-bold text-xl sm:text-2xl tracking-tightDisplay text-slate-900">Ulang Kaji Al-Quran</h3>
+                        </div>
+                    </div>
+
+                    <ol class="space-y-3">
+                        <li class="flex items-start gap-3.5 p-3.5 rounded-2xl bg-warmWhite border border-slate-200/90">
+                            <span class="w-7 h-7 rounded-xl bg-dustyBlue-800 text-white font-display font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">1</span>
+                            <p class="text-sm text-slate-800 leading-relaxed"><strong>Ulang ayat yang sudah disemak guru:</strong> Baca semula ayat atau muka surat yang telah dipelajari dalam kelas sebelum mencuba ayat baharu.</p>
+                        </li>
+                        <li class="flex items-start gap-3.5 p-3.5 rounded-2xl bg-warmWhite border border-slate-200/90">
+                            <span class="w-7 h-7 rounded-xl bg-dustyBlue-800 text-white font-display font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">2</span>
+                            <p class="text-sm text-slate-800 leading-relaxed"><strong>Baca perlahan dan terkawal:</strong> Utamakan ketepatan makhraj, harakat, dan hukum tajwid berbanding kelajuan membaca.</p>
+                        </li>
+                        <li class="flex items-start gap-3.5 p-3.5 rounded-2xl bg-warmWhite border border-slate-200/90">
+                            <span class="w-7 h-7 rounded-xl bg-dustyBlue-800 text-white font-display font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">3</span>
+                            <p class="text-sm text-slate-800 leading-relaxed"><strong>Fokus pada teguran guru:</strong> Beri perhatian lebih pada kalimah yang pernah dibetulkan guru supaya kesalahan sama tidak berulang.</p>
+                        </li>
+                        <li class="flex items-start gap-3.5 p-3.5 rounded-2xl bg-warmWhite border border-slate-200/90">
+                            <span class="w-7 h-7 rounded-xl bg-dustyBlue-800 text-white font-display font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">4</span>
+                            <p class="text-sm text-slate-800 leading-relaxed"><strong>Pecahkan ayat panjang mengikut tempat waqaf:</strong> Jika nafas pendek, berhenti pada tanda waqaf yang sesuai dan ulang dari kalimah yang dibenarkan.</p>
+                        </li>
+                        <li class="flex items-start gap-3.5 p-3.5 rounded-2xl bg-dustyBlue-50 border border-dustyBlue-200">
+                            <span class="w-7 h-7 rounded-xl bg-terracotta-700 text-white font-display font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">5</span>
+                            <p class="text-sm font-medium text-slate-900 leading-relaxed"><strong>Jangan teka bacaan yang tidak pasti:</strong> Tandakan tempat yang meragukan dan rujuk kepada guru; elakkan membiasakan bacaan yang belum sahih.</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- BAHAGIAN 3: TIPS RINGKAS UNTUK ISTIQAMAH MENGULANG KAJI -->
+            <div class="rounded-[2rem] bg-gradient-to-br from-mutedMustard-50 via-white to-terracotta-50 border border-mutedMustard-500/45 p-6 sm:p-8 shadow-md">
+                <div class="mb-6">
+                    <span class="inline-block px-3 py-1 rounded-lg bg-mutedMustard-200/80 text-mutedMustard-800 text-xs font-bold uppercase tracking-wider mb-1.5">Bahagian 3</span>
+                    <h3 class="font-display font-bold text-2xl sm:text-3xl tracking-tightDisplay text-slate-900">Tips Ringkas untuk Istiqamah Mengulang Kaji</h3>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="rounded-2xl bg-white border border-slate-200 p-4 shadow-2xs flex items-start gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-sageGreen-700 text-white flex items-center justify-center shrink-0 mt-0.5">
+                            <i data-lucide="clock" class="w-4 h-4"></i>
+                        </span>
+                        <p class="text-sm text-slate-800 leading-relaxed"><strong>Tetapkan 10–15 minit sehari:</strong> Masa yang singkat tetapi konsisten lebih berkesan daripada membaca lama tetapi jarang.</p>
+                    </div>
+
+                    <div class="rounded-2xl bg-white border border-slate-200 p-4 shadow-2xs flex items-start gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-dustyBlue-700 text-white flex items-center justify-center shrink-0 mt-0.5">
+                            <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                        </span>
+                        <p class="text-sm text-slate-800 leading-relaxed"><strong>Pilih waktu tetap:</strong> Kaitkan ulang kaji dengan rutin harian seperti selepas solat Subuh atau Maghrib.</p>
+                    </div>
+
+                    <div class="rounded-2xl bg-white border border-slate-200 p-4 shadow-2xs flex items-start gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-deepTeal-700 text-white flex items-center justify-center shrink-0 mt-0.5">
+                            <i data-lucide="volume-2" class="w-4 h-4"></i>
+                        </span>
+                        <p class="text-sm text-slate-800 leading-relaxed"><strong>Baca dengan suara jelas:</strong> Dengar sendiri sebutan anda supaya mudah mengesan baris atau huruf yang tersilap.</p>
+                    </div>
+
+                    <div class="rounded-2xl bg-white border border-slate-200 p-4 shadow-2xs flex items-start gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-terracotta-700 text-white flex items-center justify-center shrink-0 mt-0.5">
+                            <i data-lucide="bookmark" class="w-4 h-4"></i>
+                        </span>
+                        <p class="text-sm text-slate-800 leading-relaxed"><strong>Gunakan satu mushaf tetap:</strong> Lebih mudah menanda bahagian teguran guru dan mengingati kedudukan ayat.</p>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl bg-deepTeal-800 text-white p-5 flex items-center gap-4 border border-deepTeal-700">
+                    <div class="w-10 h-10 rounded-xl bg-mutedMustard-500 text-deepTeal-900 flex items-center justify-center shrink-0">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    </div>
+                    <p class="font-display font-bold text-sm sm:text-base text-white leading-snug">
+                        “Matlamat ulang kaji bukan menghabiskan banyak muka surat, tetapi memperbaiki bacaan sedikit demi sedikit.”
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================================= -->
+    <!-- MODAL PERINCIAN TOPIK IQRA & RUANG PDF                    -->
+    <!-- ========================================================= -->
+    <div id="iqra-detail-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="iqra-modal-title">
+        <div class="flex items-center justify-center min-h-screen px-4 py-6 text-center">
+            <div onclick="closeIqraModal()" class="fixed inset-0 bg-slate-950/65 backdrop-blur-2xs transition-opacity"></div>
+
+            <div class="relative z-10 inline-block w-full max-w-lg rounded-[2rem] bg-white text-left overflow-hidden shadow-2xl border border-slate-200 transform transition-all">
+                <div id="iqra-modal-header" class="bg-deepTeal-800 px-6 py-6 text-white flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div id="iqra-modal-num" class="w-12 h-12 rounded-2xl bg-mutedMustard-500 text-deepTeal-900 font-display font-extrabold text-2xl flex items-center justify-center shadow-xs">
+                            1
+                        </div>
+                        <div>
+                            <span id="iqra-modal-code" class="block text-xs font-bold uppercase tracking-wider text-mutedMustard-200">IQRA 1</span>
+                            <h3 id="iqra-modal-title" class="font-display font-bold text-xl tracking-tightDisplay text-white">Kenali Huruf</h3>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeIqraModal()" class="p-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-colors duration-150 cursor-pointer" aria-label="Tutup tetingkap">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3.5">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Senarai Topik Panduan</span>
+                        <span id="iqra-modal-count" class="text-xs font-bold px-3 py-1 rounded-lg bg-deepTeal-100 text-deepTeal-800">4 Topik</span>
+                    </div>
+
+                    <ul id="iqra-modal-list" class="space-y-2.5 mb-5 max-h-56 overflow-y-auto pr-1">
+                        <!-- Topik dijana melalui JS -->
+                    </ul>
+
+                    <div class="rounded-2xl bg-warmWhite-rich border border-slate-200 p-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="block text-xs font-bold uppercase tracking-wider text-deepTeal-800">Nota PDF Tahap Ini</span>
+                                <p id="iqra-modal-pdf-note" class="text-xs text-slate-600 mt-1">Pautan PDF belum ditetapkan.</p>
+                            </div>
+                            <button id="iqra-modal-pdf-btn" type="button" class="shrink-0 px-4 py-2.5 rounded-xl bg-deepTeal-700 hover:bg-deepTeal-800 text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors duration-150 cursor-pointer">
+                                <i data-lucide="file-down" class="w-3.5 h-3.5 text-mutedMustard-200"></i>
+                                <span>Buka PDF</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-warmWhite px-6 py-4 border-t border-slate-200 flex justify-end">
+                    <button type="button" onclick="closeIqraModal()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors duration-150 cursor-pointer">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifikasi Ringkas (Toast) -->
+    <div id="portal-toast" role="status" aria-live="polite" class="fixed bottom-5 right-5 left-5 sm:left-auto z-50 hidden sm:max-w-md rounded-2xl bg-deepTeal-900 text-white border border-mutedMustard-500/45 px-4 py-3.5 shadow-xl flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-mutedMustard-500 text-deepTeal-900 flex items-center justify-center shrink-0">
+                <i data-lucide="info" class="w-4 h-4"></i>
+            </div>
+            <p id="portal-toast-msg" class="text-xs sm:text-sm font-normal leading-snug"></p>
+        </div>
+        <button type="button" onclick="hideToast()" class="p-1.5 rounded-lg text-white/75 hover:text-white hover:bg-white/10 transition-colors duration-150 shrink-0 cursor-pointer" aria-label="Tutup notifikasi">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-deepTeal-900 text-white border-t border-mutedMustard-500/20 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5 text-center sm:text-left">
+                <div class="w-10 h-10 rounded-xl bg-mutedMustard-500 text-deepTeal-900 flex items-center justify-center shrink-0">
+                    <i data-lucide="book-open" class="w-4 h-4"></i>
+                </div>
+                <div>
+                    <p class="font-display font-bold text-sm text-white">RUANG NGAJI – Portal Pembelajaran Murid</p>
+                    <p class="text-xs font-medium text-mutedMustard-200 mt-0.5">Ruang Belajar, Ruang Memperbaiki Bacaan • Ustazah Hanna</p>
+                </div>
+            </div>
+            <p class="text-xs text-white/70">&copy; 2026 RUANG NGAJI. Hak Cipta Terpelihara.</p>
+        </div>
+    </footer>
+
+    <script>
+        /*
+         * KONFIGURASI PAUTAN BAHAN PDF SEBENAR
+         */
+        const PORTAL_CONFIG = {
+            TAJWID_PDF_URL: "",
+            IQRA_PDF_URLS: {
+                1: "",
+                2: "",
+                3: "",
+                4: "",
+                5: "",
+                6: ""
+            },
+            ALQURAN_PDF_URL: "pdf/al-quran-lengkap.pdf"
+        };
+
+        // Kandungan 6 Tahap Iqra
+        const IQRA_DATA = [
+            {
+                id: 1,
+                code: "IQRA 1",
+                title: "Kenali Huruf",
+                cardBg: "bg-gradient-to-br from-deepTeal-800 to-deepTeal-900 text-white border-deepTeal-700",
+                numBadge: "bg-mutedMustard-500 text-deepTeal-900",
+                pill: "bg-white/15 text-mutedMustard-200",
+                subText: "text-white/85",
+                dot: "bg-mutedMustard-500",
+                footerBorder: "border-white/15 text-mutedMustard-200",
+                modalHeader: "bg-deepTeal-800",
+                topics: [
+                    "Huruf hijaiyyah.",
+                    "Baris atas (Fathah).",
+                    "Bunyi huruf berbaris satu.",
+                    "Sebutan asas huruf."
+                ]
+            },
+            {
+                id: 2,
+                code: "IQRA 2",
+                title: "Huruf Bersambung",
+                cardBg: "bg-white text-slate-900 border-dustyBlue-600/35",
+                numBadge: "bg-dustyBlue-700 text-white",
+                pill: "bg-dustyBlue-100 text-dustyBlue-800",
+                subText: "text-slate-600",
+                dot: "bg-dustyBlue-700",
+                footerBorder: "border-slate-200 text-dustyBlue-800",
+                modalHeader: "bg-dustyBlue-800",
+                topics: [
+                    "Bentuk huruf bersambung.",
+                    "Kedudukan huruf di awal, tengah dan akhir.",
+                    "Bacaan panjang dengan alif.",
+                    "Alif maqsurah."
+                ]
+            },
+            {
+                id: 3,
+                code: "IQRA 3",
+                title: "Mengenal Pelbagai Baris",
+                cardBg: "bg-gradient-to-br from-sageGreen-700 to-sageGreen-800 text-white border-sageGreen-600",
+                numBadge: "bg-white text-sageGreen-900",
+                pill: "bg-white/15 text-white",
+                subText: "text-white/85",
+                dot: "bg-mutedMustard-200",
+                footerBorder: "border-white/15 text-white",
+                modalHeader: "bg-sageGreen-800",
+                topics: [
+                    "Baris bawah (Kasrah).",
+                    "Baris hadapan (Dhammah).",
+                    "Bacaan panjang dengan Ya dan Wau.",
+                    "Alif yang tidak dibunyikan."
+                ]
+            },
+            {
+                id: 4,
+                code: "IQRA 4",
+                title: "Asas Hukum Bacaan",
+                cardBg: "bg-white text-slate-900 border-mutedMustard-600/45",
+                numBadge: "bg-mutedMustard-600 text-white",
+                pill: "bg-mutedMustard-100 text-mutedMustard-800",
+                subText: "text-slate-600",
+                dot: "bg-mutedMustard-600",
+                footerBorder: "border-slate-200 text-mutedMustard-800",
+                modalHeader: "bg-mutedMustard-700",
+                topics: [
+                    "Tanwin.",
+                    "Sukun.",
+                    "Nun Sakinah.",
+                    "Mim Sakinah.",
+                    "Izhar Halqi.",
+                    "Qalqalah."
+                ]
+            },
+            {
+                id: 5,
+                code: "IQRA 5",
+                title: "Pengenalan Ilmu Tajwid",
+                cardBg: "bg-gradient-to-br from-terracotta-700 to-terracotta-800 text-white border-terracotta-600",
+                numBadge: "bg-mutedMustard-200 text-terracotta-900",
+                pill: "bg-white/15 text-white",
+                subText: "text-white/85",
+                dot: "bg-mutedMustard-200",
+                footerBorder: "border-white/15 text-white",
+                modalHeader: "bg-terracotta-800",
+                topics: [
+                    "Huruf bertasydid.",
+                    "Alif Lam Qamariyyah.",
+                    "Alif Lam Syamsiyyah.",
+                    "Idgham.",
+                    "Ikhfa.",
+                    "Hukum Mad.",
+                    "Waqaf."
+                ]
+            },
+            {
+                id: 6,
+                code: "IQRA 6",
+                title: "Pengukuhan Bacaan",
+                cardBg: "bg-white text-slate-900 border-dustyRose-600/35",
+                numBadge: "bg-dustyRose-700 text-white",
+                pill: "bg-dustyRose-100 text-dustyRose-800",
+                subText: "text-slate-600",
+                dot: "bg-dustyRose-700",
+                footerBorder: "border-slate-200 text-dustyRose-800",
+                modalHeader: "bg-dustyRose-800",
+                topics: [
+                    "Iqlab.",
+                    "Ikhfa Haqiqi.",
+                    "Pengukuhan hukum Nun Sakinah dan Tanwin.",
+                    "Pengukuhan hukum Mim Sakinah.",
+                    "Hukum Mad.",
+                    "Tanda Waqaf.",
+                    "Huruf Muqatta’ah."
+                ]
+            }
+        ];
+
+        // Data Tadabbur Ringkas & Julat Muka Surat Mushaf (Rasm Uthmani 604 Halaman) bagi Juzuk 1 hingga 30
+        // Disemak berpandukan Tafsir Pimpinan Ar-Rahman (JAKIM) & Tafsir Ibn Kathir berserta rujukan surah/ayat yang tepat
+        const JUZUK_TADABBUR = [
+            {
+                juz: 1,
+                pages: "Muka Surat 1 – 21",
+                surahs: "Al-Fatihah (1:1–7) hingga Al-Baqarah (2:141)",
+                overview: "Merangkumi keseluruhan Surah Al-Fatihah sebagai induk Al-Quran (1:1–7) serta bahagian awal Surah Al-Baqarah mengenai ciri-ciri orang bertakwa, kafir, dan munafik (2:1–20).",
+                themes: "Penciptaan Nabi Adam a.s. dan perintah sujud kepada malaikat (2:30–39), nikmat serta pelanggaran janji Bani Israel (2:40–103), dan pembinaan Kaabah oleh Nabi Ibrahim serta Nabi Ismail a.s. (2:124–129).",
+                lesson: "Al-Quran menjadi petunjuk bagi golongan bertakwa yang beriman kepada perkara ghaib, mendirikan solat, dan menginfakkan rezeki (Surah Al-Baqarah, 2:2–3)."
+            },
+            {
+                juz: 2,
+                pages: "Muka Surat 22 – 41",
+                surahs: "Al-Baqarah (2:142–252)",
+                overview: "Membahaskan perintah pertukaran arah kiblat dari Baitulmaqdis ke Masjidil Haram (2:142–150) serta pensyariatan ibadah utama dan hukum kekeluargaan.",
+                themes: "Kewajipan puasa bulan Ramadan dan turunnya Al-Quran (2:183–185), manasik ibadah haji dan umrah (2:196–203), hukum perkahwinan dan talak (2:221–237), serta kisah Talut menentang Jalut bersama Nabi Daud a.s. (2:246–251).",
+                lesson: "Kemenangan dalam perjuangan hakiki bergantung pada pertolongan Allah dan kesabaran, bukan pada bilangan tentera yang ramai (Surah Al-Baqarah, 2:249)."
+            },
+            {
+                juz: 3,
+                pages: "Muka Surat 42 – 61",
+                surahs: "Al-Baqarah (2:253–286) hingga Ali 'Imran (3:1–92)",
+                overview: "Mengandungi Ayatul Kursi tentang keagungan Allah (2:255), adab infak dan pengharaman riba (2:261–281), serta permulaan Surah Ali 'Imran mengenai keteguhan tauhid.",
+                themes: "Ayat hutang terpanjang (2:282), dua ayat penutup Surah Al-Baqarah (2:285–286), kisah keluarga Imran, kelahiran Maryam, Nabi Yahya, dan mukjizat kelahiran Nabi Isa a.s. (3:33–59).",
+                lesson: "Allah SWT tidak membebani seseorang melainkan sesuai dengan kesanggupannya (Surah Al-Baqarah, 2:286)."
+            },
+            {
+                juz: 4,
+                pages: "Muka Surat 62 – 81",
+                surahs: "Ali 'Imran (3:93–200) hingga An-Nisa' (4:1–23)",
+                overview: "Menegaskan kewajipan berpegang teguh kepada tali Allah dan larangan berpecah-belah (3:103), pengajaran daripada Perang Uhud, serta permulaan hukum faraid dalam Surah An-Nisa'.",
+                themes: "Kedudukan umat Islam sebagai umat terbaik yang menyuruh kepada makruf dan mencegah mungkar (3:110), peristiwa Perang Uhud (3:121–179), dan pembahagian pusaka secara adil (4:7–14).",
+                lesson: "Mukmin sejati sentiasa mengingati Allah dalam keadaan berdiri, duduk, dan berbaring serta memikirkan penciptaan langit dan bumi (Surah Ali 'Imran, 3:191)."
+            },
+            {
+                juz: 5,
+                pages: "Muka Surat 82 – 101",
+                surahs: "An-Nisa' (4:24–147)",
+                overview: "Menjelaskan batasan perkahwinan yang sah, kewajipan menunaikan amanah dan berlaku adil (4:58), serta ketaatan kepada Allah, Rasul, dan pemimpin (4:59).",
+                themes: "Larangan memakan harta sesama manusia secara batil (4:29), hukum solat ketika dalam ketakutan atau musafir (4:101–103), serta amaran keras terhadap golongan munafik (4:138–145).",
+                lesson: "Setiap amanah wajib diserahkan kepada yang berhak dan setiap keputusan hendaklah dihukum dengan adil (Surah An-Nisa', 4:58)."
+            },
+            {
+                juz: 6,
+                pages: "Muka Surat 102 – 121",
+                surahs: "An-Nisa' (4:148–176) hingga Al-Ma'idah (5:1–81)",
+                overview: "Menegaskan kesatuan risalah para rasul (4:150–152), kewajipan menunaikan segala akad dan perjanjian (5:1), serta pengisytiharan kesempurnaan agama Islam (5:3).",
+                themes: "Hukum makanan halal dan sembelihan Ahli Kitab (5:3–5), tatacara wuduk, mandi wajib dan tayammum (5:6), kisah dua anak Nabi Adam a.s. (5:27–31), serta larangan melampau dalam agama (5:77).",
+                lesson: "Tolong-menolonglah dalam perkara kebajikan dan ketakwaan, dan jangan tolong-menolong dalam dosa serta permusuhan (Surah Al-Ma'idah, 5:2)."
+            },
+            {
+                juz: 7,
+                pages: "Muka Surat 122 – 141",
+                surahs: "Al-Ma'idah (5:82–120) hingga Al-An'am (6:1–110)",
+                overview: "Memuatkan pengharaman arak, judi, pemujaan berhala dan tenung nasib (5:90), kisah hidangan dari langit bagi pengikut Nabi Isa a.s. (5:112–115), serta hujah tauhid dalam Surah Al-An'am.",
+                themes: "Kaffarah sumpah (5:89), dialog Allah dengan Nabi Isa a.s. pada hari kiamat (5:116–118), dan bukti keesaan Allah melalui penciptaan langit, bumi, siang dan malam (6:1–3, 6:95–99).",
+                lesson: "Arak dan judi adalah perbuatan keji daripada amalan syaitan yang wajib dijauhi demi kejayaan hidup (Surah Al-Ma'idah, 5:90)."
+            },
+            {
+                juz: 8,
+                pages: "Muka Surat 142 – 161",
+                surahs: "Al-An'am (6:111–165) hingga Al-A'raf (7:1–87)",
+                overview: "Membantah adat syirik masyarakat jahiliah mengenai binatang ternakan dan tanaman, menyenaraikan sepuluh wasiat utama (6:151–153), serta memulakan kisah para nabi dalam Surah Al-A'raf.",
+                themes: "Ikrar keikhlasan solat, ibadah, hidup dan mati hanya kerana Allah (6:162–163), kesombongan Iblis terhadap Nabi Adam a.s. (7:11–25), serta dakwah Nabi Nuh, Hud, Soleh, Lut, dan Syu'aib a.s. (7:59–87).",
+                lesson: "Kebaikan dibalas sepuluh kali ganda oleh Allah, manakala kejahatan hanya dibalas setimpal dengannya tanpa dizalimi (Surah Al-An'am, 6:160)."
+            },
+            {
+                juz: 9,
+                pages: "Muka Surat 162 – 181",
+                surahs: "Al-A'raf (7:88–206) hingga Al-Anfal (8:1–40)",
+                overview: "Merakamkan kisah panjang Nabi Musa a.s. berhadapan Firaun dan kaum Bani Israel (7:103–171), persaksian tauhid keturunan Adam (7:172), serta pengajaran Perang Badar dalam Surah Al-Anfal.",
+                themes: "Mukjizat tongkat dan tangan Nabi Musa a.s. (7:107–108), kewajipan mendengar bacaan Al-Quran dengan diam dan tenang (7:204), serta sifat orang beriman yang gementar hatinya apabila disebut nama Allah (8:2).",
+                lesson: "Apabila dibacakan Al-Quran, hendaklah kita mendengarnya dengan teliti dan diam agar beroleh rahmat Allah (Surah Al-A'raf, 7:204)."
+            },
+            {
+                juz: 10,
+                pages: "Muka Surat 182 – 201",
+                surahs: "Al-Anfal (8:41–75) hingga At-Taubah (9:1–92)",
+                overview: "Menjelaskan pembahagian harta rampasan perang (8:41), adab keteguhan menghadapi musuh (8:45–46), serta pemutusan perjanjian dengan golongan musyrikin yang mengkhianati janji dalam Surah At-Taubah.",
+                themes: "Larangan bertelagah sesama sendiri yang melemahkan kekuatan umat (8:46), golongan lapan asnaf yang berhak menerima zakat (9:60), dan keikhlasan orang miskin yang tiada kenderaan untuk berjihad (9:91–92).",
+                lesson: "Taatilah Allah dan Rasul-Nya serta janganlah berbalah sesama sendiri kerana perbalahan menghilangkan kekuatan (Surah Al-Anfal, 8:46)."
+            },
+            {
+                juz: 11,
+                pages: "Muka Surat 202 – 221",
+                surahs: "At-Taubah (9:93–129) hingga Hud (11:1–5)",
+                overview: "Memuji generasi awal Muhajirin dan Ansar (9:100), merakamkan penerimaan taubat tiga sahabat dalam Perang Tabuk (9:117–118), serta memuatkan Surah Yunus mengenai dakwah tauhid dan kisah Nabi Yunus a.s.",
+                themes: "Perintah bertakwa dan sentiasa bersama orang-orang yang benar (9:119), sifat belas kasihan Nabi Muhammad SAW terhadap umatnya (9:128), serta keselamatan kaum Nabi Yunus a.s. setelah mereka beriman (10:98).",
+                lesson: "Setiap mukmin diperintahkan bertakwa kepada Allah dan sentiasa berada bersama golongan yang jujur lagi benar (Surah At-Taubah, 9:119)."
+            },
+            {
+                juz: 12,
+                pages: "Muka Surat 222 – 241",
+                surahs: "Hud (11:6–123) hingga Yusuf (12:1–52)",
+                overview: "Menegaskan jaminan rezeki bagi setiap makhluk melata di bumi (11:6), kisah ketabahan para nabi dalam Surah Hud, serta permulaan kisah Nabi Yusuf a.s. dari mimpi hingga ujian di Mesir.",
+                themes: "Kisah banjir besar dan bahtera Nabi Nuh a.s. (11:25–48), perintah istiqamah tanpa melampaui batas (11:112), mimpi Nabi Yusuf a.s. (12:4), dan kesabaran Nabi Ya'qub a.s. menghadapi ujian anak-anaknya (12:18).",
+                lesson: "Sesungguhnya kebaikan-kebaikan itu menghapuskan kesalahan-kesalahan yang lalu (Surah Hud, 11:114)."
+            },
+            {
+                juz: 13,
+                pages: "Muka Surat 242 – 261",
+                surahs: "Yusuf (12:53–111) hingga Ibrahim (14:1–52)",
+                overview: "Menyempurnakan kisah Nabi Yusuf a.s. hingga pertemuan semula keluarganya di Mesir (12:99–101), diikuti Surah Ar-Ra'd tentang tanda kebesaran Allah dan Surah Ibrahim mengenai nikmat syukur.",
+                themes: "Kemaafan Nabi Yusuf terhadap saudara-saudaranya (12:92), ketenangan hati dengan mengingati Allah (13:28), dan janji penambahan nikmat bagi orang yang bersyukur (14:7).",
+                lesson: "Hanya dengan mengingati Allah hati menjadi tenang (Surah Ar-Ra'd, 13:28), dan syukur akan menambah nikmat-Nya (Surah Ibrahim, 14:7)."
+            },
+            {
+                juz: 14,
+                pages: "Muka Surat 262 – 281",
+                surahs: "Al-Hijr (15:1–99) hingga An-Nahl (16:1–128)",
+                overview: "Memuatkan jaminan Allah memelihara keaslian Al-Quran (15:9) serta perincian pelbagai nikmat kehidupan dalam Surah An-Nahl sebagai bukti kekuasaan dan kasih sayang-Nya.",
+                themes: "Penciptaan langit, bumi, angin dan hujan (15:16–22), nikmat haiwan ternakan, lebah dan madu yang menjadi penawar (16:5–8, 16:68–69), serta kaedah dakwah dengan hikmah dan nasihat yang baik (16:125).",
+                lesson: "Serulah manusia ke jalan Tuhanmu dengan hikmah dan pengajaran yang baik, serta berbincanglah dengan cara yang paling baik (Surah An-Nahl, 16:125)."
+            },
+            {
+                juz: 15,
+                pages: "Muka Surat 282 – 301",
+                surahs: "Al-Isra' (17:1–111) hingga Al-Kahf (18:1–74)",
+                overview: "Dimulakan dengan peristiwa Israk Nabi Muhammad SAW dari Masjidil Haram ke Masjidil Aqsa (17:1), diikuti adab terhadap ibu bapa serta kisah-kisah ibrah dalam Surah Al-Kahf.",
+                themes: "Kewajipan berbuat baik dan bertutur lembut kepada kedua ibu bapa (17:23–24), kisah Pemuda Al-Kahfi mempertahankan akidah (18:9–26), pemilik dua kebun (18:32–44), dan perjalanan Nabi Musa bersama Nabi Khidir a.s. (18:60–74).",
+                lesson: "Berbakti kepada kedua ibu bapa dengan penuh kasih sayang dan merendah diri adalah perintah utama selepas mentauhidkan Allah (Surah Al-Isra', 17:23–24)."
+            },
+            {
+                juz: 16,
+                pages: "Muka Surat 302 – 321",
+                surahs: "Al-Kahf (18:75–110) hingga Taha (20:1–135)",
+                overview: "Melengkapkan pengajaran kisah Nabi Khidir dan Zulqarnain (18:75–98), diikuti Surah Maryam tentang rahmat Allah kepada hamba-hamba-Nya dan Surah Taha mengenai perutusan Nabi Musa a.s.",
+                themes: "Pembinaan tembok Yakjuj dan Makjuj oleh Zulqarnain (18:93–98), doa Nabi Zakaria a.s. dan kelahiran Nabi Isa a.s. (19:2–34), serta wahyu pertama kepada Nabi Musa a.s. di lembah Tuwa (20:9–24).",
+                lesson: "Al-Quran diturunkan bukan untuk menyusahkan manusia, tetapi sebagai peringatan bagi orang yang takut kepada Allah (Surah Taha, 20:2–3)."
+            },
+            {
+                juz: 17,
+                pages: "Muka Surat 322 – 341",
+                surahs: "Al-Anbiya' (21:1–112) hingga Al-Hajj (22:1–78)",
+                overview: "Menegaskan kesatuan dakwah tauhid para nabi dalam Surah Al-Anbiya' serta kedudukan Nabi Muhammad SAW sebagai rahmat seluruh alam (21:107), diikuti syariat haji dan korban dalam Surah Al-Hajj.",
+                themes: "Kisah Nabi Ibrahim memecahkan berhala dan diselamatkan daripada api (21:51–70), doa Nabi Ayyub dan Nabi Yunus a.s. (21:83–88), dan pensyariatan ibadah haji serta korban (22:26–37).",
+                lesson: "Daging dan darah binatang korban sekali-kali tidak sampai kepada Allah, tetapi ketakwaan daripada hati kitalah yang sampai kepada-Nya (Surah Al-Hajj, 22:37)."
+            },
+            {
+                juz: 18,
+                pages: "Muka Surat 342 – 361",
+                surahs: "Al-Mu'minun (23:1–118) hingga Al-Furqan (25:1–20)",
+                overview: "Menyenaraikan ciri-ciri orang beriman yang berjaya (23:1–11), adab sosial dan penjagaan kehormatan dalam Surah An-Nur, serta perumpamaan cahaya hidayah Allah (24:35).",
+                themes: "Kekhusyukan solat, menjauhi perkara sia-sia dan menjaga amanah (23:2–8), adab meminta izin memasuki rumah dan menundukkan pandangan (24:27–31), serta Ayatul Nur (24:35).",
+                lesson: "Kejayaan orang beriman bermula dengan kekhusyukan dalam solat, menjaga lisan daripada perkara sia-sia, dan memelihara amanah (Surah Al-Mu'minun, 23:1–8)."
+            },
+            {
+                juz: 19,
+                pages: "Muka Surat 362 – 381",
+                surahs: "Al-Furqan (25:21–77) hingga An-Naml (27:1–55)",
+                overview: "Memaparkan sifat-sifat mulia hamba Ar-Rahman ('Ibadurrahman) dalam Surah Al-Furqan (25:63–76), kisah perjuangan para rasul dalam Surah Asy-Syu'ara', serta mukjizat Nabi Sulaiman a.s. dalam Surah An-Naml.",
+                themes: "Sifat 'Ibadurrahman yang berjalan di bumi dengan rendah hati dan menghidupkan malam dengan solat (25:63–64), doa Nabi Ibrahim a.s. (26:78–89), serta kisah Nabi Sulaiman a.s. dengan semut dan burung Hud-hud (27:16–28).",
+                lesson: "Hamba-hamba Allah yang penyayang berjalan di muka bumi dengan rendah hati dan membalas ucapan jahil dengan kata-kata kesejahteraan (Surah Al-Furqan, 25:63)."
+            },
+            {
+                juz: 20,
+                pages: "Muka Surat 382 – 401",
+                surahs: "An-Naml (27:56–93) hingga Al-'Ankabut (29:1–45)",
+                overview: "Menyambung kisah pengislaman Ratu Balqis bersama Nabi Sulaiman a.s. (27:29–44), kisah Nabi Musa a.s. sejak bayi hingga ke Madyan dalam Surah Al-Qasas, serta hakikat ujian iman dalam Surah Al-'Ankabut.",
+                themes: "Pertolongan Allah menyatukan Nabi Musa a.s. dengan ibunya (28:7–13), kisah Qarun yang dibenamkan bersama hartanya kerana sombong (28:76–82), dan hakikat bahawa setiap orang beriman pasti diuji (29:2–3).",
+                lesson: "Carilah kebahagiaan negeri akhirat dengan anugerah yang Allah berikan, tanpa melupakan bahagianmu di dunia dan berbuat baiklah kepada orang lain (Surah Al-Qasas, 28:77)."
+            },
+            {
+                juz: 21,
+                pages: "Muka Surat 402 – 421",
+                surahs: "Al-'Ankabut (29:46–69) hingga Al-Ahzab (33:1–30)",
+                overview: "Menegaskan peranan solat mencegah perbuatan keji dan mungkar (29:45), tanda-tanda kekuasaan Allah dalam Surah Ar-Rum, serta wasiat pendidikan Luqman kepada anaknya dalam Surah Luqman.",
+                themes: "Penciptaan langit, bumi, dan kepelbagaian bahasa serta warna kulit manusia (30:20–22), nasihat Luqman tentang larangan syirik, berbakti kepada ibu bapa, dan adab bergaul (31:13–19), serta ayat Sajdah (32:15).",
+                lesson: "Solat yang didirikan dengan sempurna mencegah seseorang daripada perbuatan keji dan mungkar (Surah Al-'Ankabut, 29:45)."
+            },
+            {
+                juz: 22,
+                pages: "Muka Surat 422 – 441",
+                surahs: "Al-Ahzab (33:31–73) hingga Yasin (36:1–27)",
+                overview: "Menegaskan kedudukan Rasulullah SAW sebagai teladan ikutan terbaik (33:21), perintah berselawat ke atas Nabi (33:56), nikmat kerajaan Nabi Daud dan Sulaiman a.s. (34:10–14), serta pembukaan Surah Yasin.",
+                themes: "Kemuliaan akhlak Rasulullah SAW (33:21), kisah penduduk negeri Saba' yang berpaling daripada syukur (34:15–17), dan sokongan lelaki beriman dari hujung kota kepada para utusan dalam Surah Yasin (36:20–27).",
+                lesson: "Pada diri Rasulullah SAW terdapat contoh teladan yang baik bagi sesiapa yang mengharapkan rahmat Allah dan hari akhirat (Surah Al-Ahzab, 33:21)."
+            },
+            {
+                juz: 23,
+                pages: "Muka Surat 442 – 461",
+                surahs: "Yasin (36:28–83) hingga Az-Zumar (39:1–31)",
+                overview: "Membentangkan bukti-bukti kekuasaan Allah menghidupkan yang mati dalam Surah Yasin, kisah pengorbanan Nabi Ibrahim dan Ismail a.s. dalam Surah As-Saffat, serta keikhlasan beragama dalam Surah Az-Zumar.",
+                themes: "Tanda kekuasaan Allah pada bumi yang mati, malam dan siang (36:33–40), kepatuhan Nabi Ibrahim dan Ismail a.s. dalam ujian penyembelihan (37:102–107), serta kisah Nabi Daud dan Nabi Ayyub a.s. (38:17–44).",
+                lesson: "Sembahlah Allah dengan mengikhlaskan ketaatan kepada-Nya semata-mata (Surah Az-Zumar, 39:2)."
+            },
+            {
+                juz: 24,
+                pages: "Muka Surat 462 – 481",
+                surahs: "Az-Zumar (39:32–75) hingga Fussilat (41:1–46)",
+                overview: "Memuatkan seruan harapan agar tidak berputus asa daripada rahmat keampunan Allah (39:53), kisah lelaki beriman daripada keluarga Firaun dalam Surah Ghafir, serta adab membalas keburukan dengan kebaikan.",
+                themes: "Keluasan keampunan Allah bagi hamba yang bertaubat (39:53), keberanian mukmin di istana Firaun membela Nabi Musa a.s. (40:28–44), dan perintah berdoa kepada Allah (40:60).",
+                lesson: "Janganlah berputus asa daripada rahmat Allah kerana Allah mengampunkan dosa-dosa bagi orang yang kembali bertaubat kepada-Nya (Surah Az-Zumar, 39:53)."
+            },
+            {
+                juz: 25,
+                pages: "Muka Surat 482 – 501",
+                surahs: "Fussilat (41:47–54) hingga Al-Jathiyah (45:1–37)",
+                overview: "Menegaskan prinsip bermesyuarat dalam urusan umat Islam (42:38), kesatuan risalah tauhid Nabi Ibrahim a.s. dalam Surah Az-Zukhruf, serta peringatan terhadap golongan yang mengikut hawa nafsu.",
+                themes: "Ciri orang beriman yang menyambut seruan Tuhan, mendirikan solat, dan bermesyuarat sesama mereka (42:38), persahabatan sejati pada hari kiamat hanya bagi orang bertakwa (43:67), dan peringatan malam penuh berkat (44:3).",
+                lesson: "Urusan sesama orang beriman hendaklah diputuskan melalui mesyuarat dan perbincangan yang baik (Surah Asy-Syura, 42:38)."
+            },
+            {
+                juz: 26,
+                pages: "Muka Surat 502 – 521",
+                surahs: "Al-Ahqaf (46:1–35) hingga Adh-Dhariyat (51:1–30)",
+                overview: "Menekankan kewajipan berbakti kepada kedua ibu bapa (46:15), kemenangan nyata Perjanjian Hudaibiyah dalam Surah Al-Fath, serta adab persaudaraan dan penjagaan lisan dalam Surah Al-Hujurat.",
+                themes: "Doa anak memohon keupayaan mensyukuri nikmat ketika mencapai usia 40 tahun (46:15), larangan merendahkan orang lain, berburuk sangka, mencari kesalahan dan mengumpat (49:11–12), serta kemuliaan di sisi Allah berdasarkan takwa (49:13).",
+                lesson: "Sesungguhnya orang yang paling mulia di sisi Allah dalam kalangan kamu ialah orang yang paling bertakwa (Surah Al-Hujurat, 49:13)."
+            },
+            {
+                juz: 27,
+                pages: "Muka Surat 522 – 541",
+                surahs: "Adh-Dhariyat (51:31–60) hingga Al-Hadid (57:1–29)",
+                overview: "Menjelaskan tujuan penciptaan jin dan manusia untuk beribadah kepada Allah (51:56), penghitungan nikmat Allah dalam Surah Ar-Rahman, pembahagian golongan hari kiamat dalam Surah Al-Waqi'ah, dan seruan melembutkan hati.",
+                themes: "Tujuan penciptaan manusia (51:56), pengulangan pertanyaan 'Maka nikmat Tuhanmu yang manakah kamu dustakan?' (55:13), dan teguran agar hati mukmin khusyuk mengingati Allah (57:16).",
+                lesson: "Jin dan manusia tidak diciptakan melainkan untuk beribadah dan mengabdikan diri kepada Allah SWT (Surah Adh-Dhariyat, 51:56)."
+            },
+            {
+                juz: 28,
+                pages: "Muka Surat 542 – 561",
+                surahs: "Al-Mujadilah (58:1–22) hingga At-Tahrim (66:1–12)",
+                overview: "Memuatkan adab majlis ilmu (58:11), hukum harta fai' dan akhlak golongan Ansar (59:9), kewajipan solat Jumaat (62:9), tanggungjawab memelihara keluarga (66:6), serta perintah taubat nasuha (66:8).",
+                themes: "Allah meninggikan darjat orang beriman dan berilmu pengetahuan (58:11), bersegera mengingati Allah apabila dikumandangkan azan Jumaat (62:9), dan perintah menjaga diri serta keluarga daripada api neraka (66:6).",
+                lesson: "Allah mengangkat kedudukan orang-orang yang beriman dan orang-orang yang diberi ilmu pengetahuan beberapa darjat (Surah Al-Mujadilah, 58:11)."
+            },
+            {
+                juz: 29,
+                pages: "Muka Surat 562 – 581",
+                surahs: "Al-Mulk (67:1–30) hingga Al-Mursalat (77:1–50)",
+                overview: "Dimulakan dengan Surah Al-Mulk tentang kekuasaan mutlak Allah dan tujuan ujian hidup serta mati (67:1–2), keagungan budi pekerti Nabi SAW (68:4), serta perintah membaca Al-Quran dengan tartil (73:4).",
+                themes: "Ujian hidup dan mati untuk menilai siapa yang paling baik amalannya (67:2), perintah membaca Al-Quran secara tartil dan bangun malam (73:1–4), serta kesabaran Nabi Nuh a.s. berdakwah siang dan malam (71:5–9).",
+                lesson: "Hidup dan mati diciptakan oleh Allah untuk menguji siapakah dalam kalangan kita yang paling baik amalannya (Surah Al-Mulk, 67:2)."
+            },
+            {
+                juz: 30,
+                pages: "Muka Surat 582 – 604",
+                surahs: "An-Naba' (78:1–40) hingga An-Nas (114:1–6)",
+                overview: "Himpunan 37 surah pendek yang memfokuskan kepastian hari kebangkitan, perintah membaca (Iqra') dalam wahyu pertama (96:1–5), kemuliaan malam Lailatul Qadar (97:1–5), serta pemurnian akidah tauhid.",
+                themes: "Wahyu pertama perintah membaca dengan nama Tuhan (96:1–5), syarat keselamatan daripada kerugian iaitu iman, amal soleh, saling berpesan dengan kebenaran dan kesabaran (103:1–3), serta ikhlas tauhid dalam Surah Al-Ikhlas (112:1–4).",
+                lesson: "Manusia berada dalam kerugian melainkan orang yang beriman, beramal soleh, dan saling berpesan dengan kebenaran serta kesabaran (Surah Al-'Asr, 103:1–3)."
+            }
+        ];
+
+        // Buka satu fail PDF Al-Quran lengkap sahaja
+        function openFullAlQuranPdf() {
+            const pdfUrl = (PORTAL_CONFIG.ALQURAN_PDF_URL || "").trim();
+            openPdfOrNotify(
+                pdfUrl,
+                "Fail pdf/al-quran-lengkap.pdf belum tersedia. Sila pastikan fail diletakkan di dalam folder pdf/."
+            );
+        }
+
+        // Kawalan mengembangkan atau menutup setiap baris Juz 1–30
+        function toggleJuzukItem(juzNumber) {
+            const panel = document.getElementById(`juz-panel-${juzNumber}`);
+            const chevron = document.getElementById(`juz-chevron-${juzNumber}`);
+            const btn = document.getElementById(`juz-btn-${juzNumber}`);
+            if (!panel || !btn) return;
+
+            const isHidden = panel.classList.toggle("hidden");
+            btn.setAttribute("aria-expanded", String(!isHidden));
+            if (chevron) {
+                chevron.style.transform = isHidden ? "rotate(0deg)" : "rotate(180deg)";
+            }
+        }
+
+        // Render Senarai Juz 1 hingga 30 (Tanpa Butang PDF Berulang)
+        function renderJuzukSection() {
+            const container = document.getElementById("juzuk-accordion-container");
+            if (!container) return;
+
+            const badgeStyles = [
+                "bg-deepTeal-800 text-mutedMustard-200",
+                "bg-dustyBlue-700 text-white",
+                "bg-sageGreen-700 text-white",
+                "bg-mutedMustard-600 text-white",
+                "bg-terracotta-700 text-white",
+                "bg-dustyRose-700 text-white"
+            ];
+
+            container.innerHTML = JUZUK_TADABBUR.map((item, idx) => {
+                const badgeClass = badgeStyles[idx % badgeStyles.length];
+                return `
+                    <div class="rounded-[1.5rem] bg-white border border-dustyBlue-600/25 shadow-2xs overflow-hidden transition-colors duration-150 hover:border-dustyBlue-600/45">
+                        <button id="juz-btn-${item.juz}" type="button" onclick="toggleJuzukItem(${item.juz})" aria-expanded="false" aria-controls="juz-panel-${item.juz}" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 hover:bg-warmWhite/70 transition-colors duration-150 cursor-pointer">
+                            <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
+                                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl ${badgeClass} font-display font-extrabold text-lg sm:text-xl flex items-center justify-center shrink-0 shadow-2xs">
+                                    ${item.juz}
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                                        <span class="font-display font-bold text-base sm:text-lg text-slate-900">Juzuk ${item.juz}</span>
+                                        <span class="px-2.5 py-0.5 rounded-lg bg-dustyBlue-50 text-dustyBlue-800 border border-dustyBlue-200 text-xs font-bold">
+                                            ${item.pages}
+                                        </span>
+                                    </div>
+                                    <p class="text-xs sm:text-sm text-slate-600 truncate">${item.surahs}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2 shrink-0">
+                                <span class="hidden sm:inline text-xs font-bold text-dustyBlue-700">Tadabbur Ringkas</span>
+                                <span class="w-8 h-8 rounded-xl bg-dustyBlue-50 text-dustyBlue-800 flex items-center justify-center">
+                                    <i id="juz-chevron-${item.juz}" data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200"></i>
+                                </span>
+                            </div>
+                        </button>
+
+                        <div id="juz-panel-${item.juz}" class="hidden px-5 pb-5 sm:px-6 sm:pb-6 pt-1 border-t border-slate-100 bg-warmWhite/60">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-3">
+                                <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                    <span class="block text-[11px] font-bold uppercase tracking-wider text-dustyBlue-800 mb-1">Gambaran Ringkas</span>
+                                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${item.overview}</p>
+                                </div>
+                                <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                    <span class="block text-[11px] font-bold uppercase tracking-wider text-sageGreen-800 mb-1">Tema &amp; Kisah Penting</span>
+                                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${item.themes}</p>
+                                </div>
+                                <div class="rounded-2xl bg-mutedMustard-50 border border-mutedMustard-200 p-4">
+                                    <span class="block text-[11px] font-bold uppercase tracking-wider text-mutedMustard-800 mb-1">Pengajaran Ringkas</span>
+                                    <p class="text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">${item.lesson}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // Fungsi umum membuka PDF atau memberi notifikasi
+        function openPdfOrNotify(url, fallbackMessage) {
+            if (typeof url === "string" && url.trim() !== "") {
+                window.open(url.trim(), "_blank", "noopener,noreferrer");
+            } else {
+                showToast(fallbackMessage);
+            }
+        }
+
+        function openTajwidCompletePdf() {
+            openPdfOrNotify(
+                PORTAL_CONFIG.TAJWID_PDF_URL,
+                "Fail PDF Tajwid lengkap belum dipautkan. Tetapkan PORTAL_CONFIG.TAJWID_PDF_URL apabila fail sudah tersedia."
+            );
+        }
+
+        function updateTajwidLinkStatus() {
+            const label = document.getElementById("tajwid-status-label");
+            if (!label) return;
+            const hasUrl = typeof PORTAL_CONFIG.TAJWID_PDF_URL === "string" && PORTAL_CONFIG.TAJWID_PDF_URL.trim() !== "";
+            label.textContent = hasUrl
+                ? `Status pautan: Sedia (${PORTAL_CONFIG.TAJWID_PDF_URL.trim()})`
+                : "Status pautan: Belum ditetapkan (Sedia dikemas kini kelak)";
+        }
+
+        // Fungsi Salin Teks Arab (Zikir & Doa)
+        function copyAmalanText(elementId, title) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const textToCopy = el.textContent.trim();
+
+            const tempArea = document.createElement("textarea");
+            tempArea.value = textToCopy;
+            tempArea.setAttribute("readonly", "");
+            tempArea.style.position = "fixed";
+            tempArea.style.opacity = "0";
+            document.body.appendChild(tempArea);
+            tempArea.select();
+
+            try {
+                document.execCommand("copy");
+                showToast(`Teks Arab bagi "${title}" berjaya disalin.`);
+            } catch (err) {
+                showToast("Tidak dapat menyalin teks secara automatik.");
+            } finally {
+                document.body.removeChild(tempArea);
+            }
+        }
+
+        // Render 6 Kad Iqra
+        function renderIqraSection() {
+            const container = document.getElementById("iqra-cards-container");
+            if (!container) return;
+
+            container.innerHTML = IQRA_DATA.map((item, index) => `
+                <div onclick="openIqraModal(${item.id})" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openIqraModal(${item.id});}" style="animation-delay: ${index * 0.035}s;" class="stagger-item interactive-card cursor-pointer rounded-[2rem] border ${item.cardBg} p-6 sm:p-7 shadow-sm hover:shadow-xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between gap-3 mb-5">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl ${item.numBadge} font-display font-extrabold text-2xl flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform duration-150">
+                                    ${item.id}
+                                </div>
+                                <div>
+                                    <span class="inline-block px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${item.pill}">${item.code}</span>
+                                    <span class="block text-xs font-medium ${item.subText} mt-1">${item.topics.length} Topik</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="font-display font-bold text-xl sm:text-2xl tracking-tightDisplay mb-3">${item.title}</h3>
+
+                        <ul class="space-y-2 mb-6">
+                            ${item.topics.slice(0, 3).map(topic => `
+                                <li class="text-sm font-normal ${item.subText} flex items-start gap-2.5 leading-snug">
+                                    <span class="w-1.5 h-1.5 rounded-full ${item.dot} mt-2 shrink-0"></span>
+                                    <span>${topic}</span>
+                                </li>
+                            `).join("")}
+                            ${item.topics.length > 3 ? `
+                                <li class="text-xs font-bold pt-1 pl-4 ${item.subText}">
+                                    + ${item.topics.length - 3} topik lagi
+                                </li>
+                            ` : ""}
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t ${item.footerBorder} flex items-center justify-between text-xs font-bold uppercase tracking-wider">
+                        <span>Lihat Topik &amp; PDF</span>
+                        <span class="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center group-hover:translate-x-0.5 transition-transform duration-150">
+                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </span>
+                    </div>
+                </div>
+            `).join("");
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // Navigasi terus ke bahagian Adab & Nasihat di halaman Utama
+        function scrollToAdab() {
+            navigateTo('utama');
+            setTimeout(() => {
+                const target = document.getElementById('adab-nasihat-anchor');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 60);
+        }
+
+        // Navigasi Antara Seksyen
+        function navigateTo(sectionName) {
+            const sections = document.querySelectorAll(".portal-section");
+            sections.forEach(sec => sec.classList.add("hidden"));
+
+            const activeSec = document.getElementById(`section-${sectionName}`);
+            if (activeSec) {
+                activeSec.classList.remove("hidden");
+                activeSec.classList.remove("section-enter");
+                void activeSec.offsetWidth;
+                activeSec.classList.add("section-enter");
+            }
+
+            document.querySelectorAll(".desktop-nav").forEach(btn => {
+                if (btn.dataset.nav === sectionName) {
+                    btn.classList.add("is-active", "text-mutedMustard-200", "font-bold");
+                    btn.classList.remove("text-white/85", "font-medium");
+                    btn.setAttribute("aria-current", "page");
+                } else {
+                    btn.classList.remove("is-active", "text-mutedMustard-200", "font-bold");
+                    btn.classList.add("text-white/85", "font-medium");
+                    btn.removeAttribute("aria-current");
+                }
+            });
+
+            document.querySelectorAll(".mobile-nav").forEach(btn => {
+                if (btn.dataset.nav === sectionName) {
+                    btn.classList.add("bg-mutedMustard-500", "text-deepTeal-900", "font-bold");
+                    btn.classList.remove("text-white/90", "hover:bg-deepTeal-700", "font-medium");
+                    btn.setAttribute("aria-current", "page");
+                } else {
+                    btn.classList.remove("bg-mutedMustard-500", "text-deepTeal-900", "font-bold");
+                    btn.classList.add("text-white/90", "hover:bg-deepTeal-700", "font-medium");
+                    btn.removeAttribute("aria-current");
+                }
+            });
+
+            initScrollReveal();
+            if (window.lucide) lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // Kawalan Menu Mudah Alih
+        function toggleMobileMenu() {
+            const drawer = document.getElementById("mobile-menu-drawer");
+            const btn = document.getElementById("mobile-menu-toggle");
+            if (!drawer || !btn) return;
+            const isHidden = drawer.classList.toggle("hidden");
+            btn.setAttribute("aria-expanded", String(!isHidden));
+        }
+
+        function closeMobileMenu() {
+            const drawer = document.getElementById("mobile-menu-drawer");
+            const btn = document.getElementById("mobile-menu-toggle");
+            if (drawer && !drawer.classList.contains("hidden")) {
+                drawer.classList.add("hidden");
+            }
+            if (btn) {
+                btn.setAttribute("aria-expanded", "false");
+            }
+        }
+
+        // Modal Iqra
+        function openIqraModal(id) {
+            const data = IQRA_DATA.find(item => item.id === id);
+            if (!data) return;
+
+            document.getElementById("iqra-modal-header").className = `${data.modalHeader} px-6 py-6 text-white flex items-center justify-between`;
+            document.getElementById("iqra-modal-num").textContent = data.id;
+            document.getElementById("iqra-modal-code").textContent = data.code;
+            document.getElementById("iqra-modal-title").textContent = data.title;
+            document.getElementById("iqra-modal-count").textContent = `${data.topics.length} Topik`;
+
+            const configuredPdf = PORTAL_CONFIG.IQRA_PDF_URLS[data.id] || "";
+            const hasPdf = typeof configuredPdf === "string" && configuredPdf.trim() !== "";
+            document.getElementById("iqra-modal-pdf-note").textContent = hasPdf
+                ? `Fail PDF sedia: ${configuredPdf.trim()}`
+                : "Pautan PDF belum ditetapkan untuk tahap ini.";
+
+            const pdfBtn = document.getElementById("iqra-modal-pdf-btn");
+            pdfBtn.onclick = function () {
+                openPdfOrNotify(
+                    configuredPdf,
+                    `Fail PDF bagi ${data.code} (${data.title}) belum dipautkan. Tetapkan PORTAL_CONFIG.IQRA_PDF_URLS[${data.id}] apabila sedia.`
+                );
+            };
+
+            const listEl = document.getElementById("iqra-modal-list");
+            listEl.innerHTML = data.topics.map((topic, idx) => `
+                <li class="flex items-center gap-3 p-3 rounded-xl bg-warmWhite border border-slate-200 text-sm font-medium text-slate-800">
+                    <span class="w-6 h-6 rounded-lg bg-deepTeal-800 text-mutedMustard-200 font-display font-bold text-xs flex items-center justify-center shrink-0">
+                        ${idx + 1}
+                    </span>
+                    <span>${topic}</span>
+                </li>
+            `).join("");
+
+            document.getElementById("iqra-detail-modal").classList.remove("hidden");
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeIqraModal() {
+            const modal = document.getElementById("iqra-detail-modal");
+            if (modal) modal.classList.add("hidden");
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                closeIqraModal();
+                closeMobileMenu();
+                hideToast();
+            }
+        });
+
+        // Notifikasi Toast
+        let toastTimer = null;
+        function showToast(message) {
+            const toast = document.getElementById("portal-toast");
+            const msgEl = document.getElementById("portal-toast-msg");
+            if (!toast || !msgEl) return;
+
+            msgEl.textContent = message;
+            toast.classList.remove("hidden");
+            if (window.lucide) lucide.createIcons();
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                hideToast();
+            }, 4200);
+        }
+
+        function hideToast() {
+            const toast = document.getElementById("portal-toast");
+            if (toast) toast.classList.add("hidden");
+        }
+
+        // Scroll Reveal
+        function initScrollReveal() {
+            const targets = document.querySelectorAll(".scroll-reveal");
+            if (!("IntersectionObserver" in window)) {
+                targets.forEach(el => el.classList.add("revealed"));
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("revealed");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.08 });
+
+            targets.forEach(el => {
+                if (!el.classList.contains("revealed")) {
+                    observer.observe(el);
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            updateTajwidLinkStatus();
+            renderIqraSection();
+            renderJuzukSection();
+            initScrollReveal();
+            if (window.lucide) lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
